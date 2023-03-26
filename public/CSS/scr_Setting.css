@@ -1,0 +1,160 @@
+/*Màn hình bằng tay*/
+#Screen_Setting {
+    position: absolute; 
+    left: 202px; top: 2px; 
+    width: 1320px; height: 80px;
+    background-color:rgb(40, 58, 107); 
+    border-radius: 20px;
+}
+#btt_Setting_Traffic_Lights{
+    border: rgb(40, 58, 107); 
+    background-color: rgb(40, 58, 107);
+    border: none; color:  #ecf0f1;  
+    text-align: left; 
+    display: inline-block;
+    font-size: 18px; 
+    font-weight: bold;
+    font-family: Montserrat;
+    cursor: pointer;
+    position: absolute; 
+    width: 300px; height: 80px; 
+    left: 0px; top: 0px;
+    padding-left: 20px;
+    text-align: center;
+    border-right: 4px solid rgb(5, 31, 101); 
+    border-radius: 20px ;
+}
+#btt_Setting_Inverter{
+    border: rgb(40, 58, 107); 
+    background-color: rgb(40, 58, 107);
+    border: none; color:  #ecf0f1;  
+    text-align: left; 
+    display: inline-block;
+    font-size: 18px; 
+    font-weight: bold;
+    font-family: Montserrat;
+    cursor: pointer;
+    position: absolute; 
+    width: 300px; height: 80px; 
+    left: 300px; top: 0px;
+    padding-left: 20px;
+    text-align: center;
+    border-right: 4px solid rgb(5, 31, 101);
+    border-radius: 20px;
+}
+#Screen_Setting_Traffic_Lights {
+    position: absolute; 
+    left: 0px; top: 80px; 
+    width: 1320px; height: 645px;
+    background-color: rgb(43, 35, 204); 
+    border-radius: 20px;
+    background-color: rgb(15, 228, 210); 
+}
+#Screen_Setting_Inverter {
+    position: absolute; 
+    left: 0px; top: 80px; 
+    width: 1320px; height: 645px;
+    background-color: rgb(204, 35, 46); 
+    border-radius: 20px;
+    background-color: rgb(15, 228, 210); 
+}
+
+.Param-Setting-Trafic-Lights-Container{
+    position: absolute;
+    left: 360px; top: 100px;
+    width: 610px ; height: 470px;
+    border:solid rgb(40, 58, 107) 3px;
+    border-radius: 20px;
+
+}
+
+#Cai-dat-thong-so-text{
+    position: absolute;
+    font-family: Montserrat ;
+    font-weight: bold;
+    font-size: 28px;
+    left:90px;  top:20px;
+    color: black;
+    border-bottom: 7px rgb(40, 58, 107) solid ;
+    text-align: center;
+    white-space: nowrap;
+    padding-bottom: 30px;
+    width: 412px;
+}
+
+#Thoi-gian-den-do-cai-dat-text{
+    position: absolute;
+    left: 20px; top: 120px;
+    font-family: Montserrat;
+    font-weight: bold;
+    font-size: 23px;
+    opacity: 0.8;
+}
+#Thoi-gian-den-vang-cai-dat-text{
+    position: absolute;
+    left: 20px; top: 220px;
+    font-family: Montserrat;
+    font-weight: bold;
+    font-size: 23px;
+    opacity: 0.8;
+}
+#Thoi-gian-den-xanh-cai-dat-text{
+    position: absolute;
+    left: 20px; top: 320px;
+    font-family: Montserrat;
+    font-weight: bold;
+    font-size: 23px;
+    opacity: 0.8;
+}
+#btt_Traffic_Lights_Confirm{
+    position: absolute;
+    width: 206px; height: 61px;
+    left: 200px; top:385px;
+    border-radius: 10px;
+    background-color:rgb(40, 58, 107) ;
+    color: #ecf0f1;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: Montserrat ;
+}
+#Time_Red_Setting{
+    position: absolute;
+    width: 160px; height: 55px;
+    left:330px; top: 105px;
+    background-color: rgb(15, 228, 210);
+    border: none;
+    border-bottom: 2px solid black;
+    outline: none;
+    font-size: 18px;
+   font-weight: bold;
+    font-family: Montserrat ;
+    text-align: center ;
+}
+
+#Time_Yellow_Setting{
+    position: absolute;
+    width: 160px; height: 55px;
+    left:330px; top: 205px;
+    background-color: rgb(15, 228, 210);
+    border: none;
+    border-bottom: 2px solid black;
+    outline: none;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: Montserrat ;
+    text-align: center ;
+}
+
+#Time_Green_Setting{
+    position: absolute;
+    width: 160px; height: 55px;
+    left:330px; top: 305px;
+    background-color: rgb(15, 228, 210);
+    border: none;
+    border-bottom: 2px solid black;
+    outline: none;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: Montserrat ;
+    text-align: center ;
+}

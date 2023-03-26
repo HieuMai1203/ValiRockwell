@@ -1,0 +1,106 @@
+/*Slide bar chính*/
+#slidebar {
+    position: absolute; 
+    left: 2px; top: 2px; 
+    width: 198px; height: 725px;
+    background-color: rgb(40, 58, 107); 
+    border-radius: 20px;
+}
+/*Nút Màn tự động*/
+#btt_Monitor {
+    border: rgb(40, 58, 107); 
+    background-color: rgb(40, 58, 107);  
+    color:  #ecf0f1;  
+    text-align: left; 
+    display: inline-block;
+    font-size: 22px; 
+    font-weight: bold;
+    font-family: Montserrat;
+    cursor: pointer;
+    position: absolute; 
+    width: 198px; height: 80px; 
+    left: 0px; top: 120px;
+    padding-left: 20px;
+    border-radius: 20px;
+    
+}
+/*Nút Màn hình bằng tay*/
+#btt_Setting {
+
+    background-color:rgb(40, 58, 107);
+    border: none; color: #ecf0f1;  
+    text-align: left; 
+    display: inline-block;
+    font-size: 22px; 
+    font-weight: bold;
+    font-family: Montserrat;
+    cursor: pointer;
+    position: absolute; 
+    width: 198px; height: 80px; 
+    left: 0px; top: 200px;
+    padding-left: 20px;
+    border-radius: 20px;
+}
+
+#btt_Report {
+    background-color:rgb(40, 58, 107);
+    border: none; color: #ecf0f1;  
+    text-align: left; 
+    display: inline-block;
+    font-size: 22px; 
+    font-weight: bold;
+    font-family: Montserrat;
+    cursor: pointer;
+    position: absolute; 
+    width: 198px; height: 80px; 
+    left: 0px; top: 280px;
+    padding-left: 20px;
+    border-radius: 20px;
+}
+#btt_Alarm {
+    background-color:rgb(40, 58, 107);
+    border: none; color: #ecf0f1;  
+    text-align: left; 
+    display: inline-block;
+    font-size: 22px; 
+    font-weight: bold;
+    font-family: Montserrat;
+    cursor: pointer;
+    position: absolute; 
+    width: 198px; height: 80px; 
+    left: 0px; top: 360px;
+    padding-left: 20px;
+    border-radius: 20px;
+}
+#btt_History {
+    background-color: rgb(40, 58, 107);
+    border: none; color:  #ecf0f1;  
+    text-align: left; 
+    display: inline-block;
+    font-size: 22px; 
+    font-weight: bold;
+    font-family: Montserrat;
+    cursor: pointer;
+    position: absolute; 
+    width: 198px; height: 80px; 
+    left: 0px; top: 440px;
+    padding-left: 20px;
+    border-radius: 20px;
+}
+
+#logo_BK{
+    position: absolute;
+    left: 7px; top: 25px;
+    width: 45%;
+   
+}
+
+#logo_RW{
+    position: absolute;
+    left: 103px; top: 25px;
+    width: 45%;
+   
+}
+
+
+

@@ -1,0 +1,238 @@
+<html>
+    <!-- Phần Header của Website -->
+    <head>
+        <!-- ////////////// GỌI CÁC CSS //////////////  -->
+        <link rel="stylesheet" href= "CSS/login.css">
+        <link rel="stylesheet" href= "CSS/slidebar.css">
+        <link rel="stylesheet" href= "CSS/scr_Monitor.css">
+        <link rel="stylesheet" href= "CSS/scr_Setting.css">
+        <link rel="stylesheet" href= "CSS/scr_Report.css">
+        <link rel="stylesheet" href= "CSS/scr_Alarm.css">
+        <link rel="stylesheet" href= "CSS/scr_History.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" 
+
+       
+
+        <!-- ////////////// CHƯƠNG TRÌNH HỆ THỐNG //////////////  -->
+        <title>Scada vali IFM</title>
+        <script src = "socket.io/socket.io.js"></script>
+        <script src = "js/FC1_Common.js"></script>
+        <script src = "js/FC2_UserManagement.js"></script>
+        <script src = "js/FC3_ScreenMonitor.js"></script>
+        <script src = "js/FC4_ScreenSetting.js"></script>
+        
+        <script>
+            var socket = io("localhost:3000"); // IP tĩnh (hoặc IP động, hoặc localhost)
+        </script>
+        <!-- ////////////// CHƯƠNG TRÌNH ĐĂNG NHẬP HỆ THỐNG //////////////  -->
+        <!-- <div id="div_login">
+            <div id="id01" class="modal">
+                <form id = "modal-content1" class="modal-content animate">
+                <div id = "img_container" class="imgcontainer">
+                    <span id = "closebtt" onclick="document.getElementById('id01').style.display='none'; logout();" class="close" title="Close Modal">&times;</span>
+                    <img id = "img_avatar1" src="images/logo_bachkhoa.png" alt="Avatar" class="avatar">
+                    <img id = "img_avatar2" src="images/logo_Rockwell.png" alt="Avatar" class="avatar">
+                   
+                </div>
+            
+                <div id = "log_container" class="container">
+                    <label for="uname"><b>Username</b></label>
+                    <input id = "inputuser" type="text" placeholder="Enter Username" name="uname" required>
+            
+                    <label for="psw"><b>Password</b></label>
+                    <input id = "inputpass" type="password" placeholder="Enter Password" name="psw" required>
+                    
+                    <button id = "bttlogin1" type="button" onclick="login();">Login</button>
+                    <label>
+                    <input type="checkbox" checked="checked" name="remember"> Remember me
+                    </label>
+                </div>
+            
+                <div id = "login_container" class="container" style="background-color:#f1f1f1">
+                    <button id = "bttcancle" type="button" onclick="document.getElementById('id01').style.display='none'; logout();" class="cancelbtn">Cancel</button>
+                    <span id = "psw" class="psw">Forgot <a href="#">password?</a></span>
+                </div>
+                </form>
+            </div>
+        </div> -->
+    </head>
+    <body>
+    <!-- ////////////// Code cho slidebar////////////// -->
+        <div id = "slidebar">
+            <img id="logo_BK" src="images/logo_bachkhoa.png">
+            <img id="logo_RW" src="images/logo_Rockwell.png">
+            <!--Nút chọn màn hình chính-->
+            <button id="btt_Monitor" onclick=" 
+                fn_ScreenChange('Screen_Monitor','Screen_Setting','Screen_Report','Screen_Alarm','Screen_History','btt_Monitor','btt_Setting','btt_Report','btt_Alarm','btt_History');
+            "><i class="fa-solid fa-desktop"></i> GIÁM SÁT</button>
+           
+            <!--Nút chọn màn hình 1-->
+            <button id="btt_Setting" onclick=" 
+               fn_ScreenChange('Screen_Setting','Screen_Report','Screen_Alarm','Screen_History','Screen_Monitor','btt_Setting','btt_Monitor','btt_Report','btt_Alarm','btt_History');
+            "><i class="fa-solid fa-gear"></i> CÀI ĐẶT</button>         
+             <button id="btt_Report" onclick=" 
+              fn_ScreenChange('Screen_Report','Screen_Alarm','Screen_History','Screen_Monitor','Screen_Setting','btt_Report','btt_Monitor','btt_Setting','btt_Alarm','btt_History');
+              
+            "><i class="fa-solid fa-newspaper"></i> BÁO CÁO </button>    
+             <button id="btt_Alarm" onclick=" 
+                fn_ScreenChange('Screen_Alarm','Screen_History','Screen_Monitor','Screen_Setting','Screen_Report','btt_Alarm','btt_Monitor','btt_Setting','btt_Report','btt_History');
+             "><i class="fa-solid fa-triangle-exclamation"></i> CẢNH BÁO</button> 
+              <button id="btt_History" onclick=" 
+               fn_ScreenChange('Screen_History','Screen_Monitor','Screen_Setting','Screen_Report','Screen_Alarm','btt_History','btt_Monitor','btt_Setting','btt_Report','btt_Alarm');
+             "><i class="fa-solid fa-clock-rotate-left"></i> LỊCH SỬ</button>          
+        </div>
+    <!-- //////////////Code cho màn hình tự động////////////// -->
+         
+    <!-- //////////////Code cho màn hình bằng tay////////////// -->
+        <div id = "Screen_Setting">
+            <button id="btt_Setting_Traffic_Lights" onclick="fn_ScreenChange_Sub('Screen_Setting_Traffic_Lights','Screen_Setting_Inverter','btt_Setting_Traffic_Lights','btt_Setting_Inverter')" >ĐÈN GIAO THÔNG</button>
+
+            <button id="btt_Setting_Inverter" onclick="fn_ScreenChange_Sub('Screen_Setting_Inverter','Screen_Setting_Traffic_Lights','btt_Setting_Inverter','btt_Setting_Traffic_Lights')">BIẾN TẦN & ĐỘNG CƠ</button>
+            <div id="Screen_Setting_Traffic_Lights">
+                <div class="Param-Setting-Trafic-Lights-Container">
+                    <div id="Cai-dat-thong-so-text">CÀI ĐẶT THÔNG SỐ</div>
+                    <div id="Thoi-gian-den-do-cai-dat-text">Thời gian đèn đỏ :</div>
+                    <div id="Thoi-gian-den-vang-cai-dat-text">Thời gian đèn vàng :</div>
+                    <div id="Thoi-gian-den-xanh-cai-dat-text">Thời gian đèn xanh :</div>
+                    <button id="btt_Traffic_Lights_Confirm" onclick="fn_SaveDataTrafficLights()">XÁC NHẬN</button>
+                    <input id="Time_Red_Setting">
+                    <input id="Time_Yellow_Setting">
+                    <input id="Time_Green_Setting">
+                </div>
+            </div>
+
+            <div id="Screen_Setting_Inverter">
+                <p> cai dat bien tan</p>
+            </div> 
+        </div>
+            
+        
+            
+                       
+         <!-- //////////////Code cho màn hình bằng tay////////////// -->
+        <div id = "Screen_Report">
+            <p>Đây là màn hình báo cáo</p>
+        </div> 
+     <!-- //////////////Code cho màn hình bằng tay////////////// -->
+        <div id = "Screen_Alarm">
+            <p>Đây là màn hình cảnh báo</p>
+        </div>   
+     <!-- //////////////Code cho màn hình bằng tay////////////// -->
+        <div id = "Screen_History">
+            <p>Đây là màn hình lịch sử</p>
+        </div>   
+        <div id = "Screen_Monitor">
+            
+            <button id="btt_Monitor_Traffic_Lights" onclick="fn_ScreenChange_Sub('Screen_Monitor_Traffic_Lights','Screen_Monitor_Inverter','btt_Monitor_Traffic_Lights','btt_Monitor_Inverter')" >ĐÈN GIAO THÔNG</button>
+
+            <button id="btt_Monitor_Inverter" onclick="fn_ScreenChange_Sub('Screen_Monitor_Inverter','Screen_Monitor_Traffic_Lights','btt_Monitor_Inverter','btt_Monitor_Traffic_Lights')">BIẾN TẦN & ĐỘNG CƠ</button>
+            <div id="Screen_Monitor_Inverter">
+                <img src="images/BilletDrill/BilletDrill.png">
+            </div>
+            <div  id="Screen_Monitor_Traffic_Lights">
+                
+                <div class="background_traffic_lights" > 
+                    <img id="traffic_lights_background" src="images/traffic_lights/NGA4.png"> 
+                    <img id="Time_background"> <script>fn_SymbolStatus("Time_background", "Time", "LightSensor")</script> 
+                    <div class="Lights-container">
+                        <img class="Lights_Bot" id="Light_Bot_Red">   <script>fn_SymbolStatus("Light_Bot_Red", "Red", "RedLightA"   )</script>
+                        <img class="Lights_Bot" id="Light_Bot_Yellow"><script>fn_SymbolStatus("Light_Bot_Yellow", "Yellow", "YellowLightA"   )</script>
+                        <img class="Lights_Bot" id="Light_Bot_Green"> <script>fn_SymbolStatus("Light_Bot_Green", "Green", "GreenLightA"   )</script>
+
+                        <img class="Lights_Top" id="Light_Top_Red">   <script>fn_SymbolStatus("Light_Top_Red", "Red", "RedLightA"   )</script>
+                        <img class="Lights_Top" id="Light_Top_Yellow"><script>fn_SymbolStatus("Light_Top_Yellow", "Yellow", "YellowLightA"   )</script>
+                        <img class="Lights_Top" id="Light_Top_Green"> <script>fn_SymbolStatus("Light_Top_Green", "Green", "GreenLightA"   )</script>
+
+                        <img class="Lights_Left" id="Light_Left_Red">   <script>fn_SymbolStatus("Light_Left_Red", "Red", "RedLightB"   )</script>
+                        <img class="Lights_Left" id="Light_Left_Yellow"><script>fn_SymbolStatus("Light_Left_Yellow", "Yellow", "YellowLightB"   )</script>
+                        <img class="Lights_Left" id="Light_Left_Green"> <script>fn_SymbolStatus("Light_Left_Green", "Green", "GreenLightB"   )</script>
+
+                        <img class="Lights_Right" id="Light_Right_Red">   <script>fn_SymbolStatus("Light_Right_Red", "Red", "RedLightB"   )</script>
+                        <img class="Lights_Right" id="Light_Right_Yellow"><script>fn_SymbolStatus("Light_Right_Yellow", "Yellow", "YellowLightB"   )</script>
+                        <img class="Lights_Right" id="Light_Right_Green"> <script>fn_SymbolStatus("Light_Right_Green", "Green", "GreenLightB"   )</script>
+                    </div>
+                    <div class="Segment-container">
+                        <!-- Lights Bot  -->
+                        <img class="Segment_Bot_0" id="Segment_Bot_a_0"> <script> fn_7segmentDisplay("Segment_Bot_a_0", "7Seg_horizontal", "SegmentA_0_Code",6) </script>
+                        <img class="Segment_Bot_0" id="Segment_Bot_b_0"> <script> fn_7segmentDisplay("Segment_Bot_b_0", "7Seg_vertical", "SegmentA_0_Code",5) </script>
+                        <img class="Segment_Bot_0" id="Segment_Bot_c_0"> <script> fn_7segmentDisplay("Segment_Bot_c_0", "7Seg_vertical", "SegmentA_0_Code",4) </script>
+                        <img class="Segment_Bot_0" id="Segment_Bot_d_0"> <script> fn_7segmentDisplay("Segment_Bot_d_0", "7Seg_horizontal", "SegmentA_0_Code",3) </script>
+                        <img class="Segment_Bot_0" id="Segment_Bot_e_0"> <script> fn_7segmentDisplay("Segment_Bot_e_0", "7Seg_vertical", "SegmentA_0_Code",2) </script>
+                        <img class="Segment_Bot_0" id="Segment_Bot_f_0"> <script> fn_7segmentDisplay("Segment_Bot_f_0", "7Seg_vertical", "SegmentA_0_Code",1) </script>
+                        <img class="Segment_Bot_0" id="Segment_Bot_g_0"> <script> fn_7segmentDisplay("Segment_Bot_g_0", "7Seg_horizontal", "SegmentA_0_Code",0) </script>
+
+                        <img class="Segment_Bot_1" id="Segment_Bot_a_1"> <script> fn_7segmentDisplay("Segment_Bot_a_1", "7Seg_horizontal", "SegmentA_1_Code",6) </script>
+                        <img class="Segment_Bot_1" id="Segment_Bot_b_1"> <script> fn_7segmentDisplay("Segment_Bot_b_1", "7Seg_vertical", "SegmentA_1_Code",5) </script>
+                        <img class="Segment_Bot_1" id="Segment_Bot_c_1"> <script> fn_7segmentDisplay("Segment_Bot_c_1", "7Seg_vertical", "SegmentA_1_Code",4) </script>
+                        <img class="Segment_Bot_1" id="Segment_Bot_d_1"> <script> fn_7segmentDisplay("Segment_Bot_d_1", "7Seg_horizontal", "SegmentA_1_Code",3) </script>
+                        <img class="Segment_Bot_1" id="Segment_Bot_e_1"> <script> fn_7segmentDisplay("Segment_Bot_e_1", "7Seg_vertical", "SegmentA_1_Code",2) </script>
+                        <img class="Segment_Bot_1" id="Segment_Bot_f_1"> <script> fn_7segmentDisplay("Segment_Bot_f_1", "7Seg_vertical", "SegmentA_1_Code",1) </script>
+                        <img class="Segment_Bot_1" id="Segment_Bot_g_1"> <script> fn_7segmentDisplay("Segment_Bot_g_1", "7Seg_horizontal", "SegmentA_1_Code",0) </script>
+
+                         <!-- Lights Top  -->
+                        <img class="Segment_Top_0" id="Segment_Top_a_0"> <script> fn_7segmentDisplay("Segment_Top_a_0", "7Seg_horizontal", "SegmentA_0_Code",6) </script>
+                        <img class="Segment_Top_0" id="Segment_Top_b_0"> <script> fn_7segmentDisplay("Segment_Top_b_0", "7Seg_vertical", "SegmentA_0_Code",5) </script>
+                        <img class="Segment_Top_0" id="Segment_Top_c_0"> <script> fn_7segmentDisplay("Segment_Top_c_0", "7Seg_vertical", "SegmentA_0_Code",4) </script>
+                        <img class="Segment_Top_0" id="Segment_Top_d_0"> <script> fn_7segmentDisplay("Segment_Top_d_0", "7Seg_horizontal", "SegmentA_0_Code",3) </script>
+                        <img class="Segment_Top_0" id="Segment_Top_e_0"> <script> fn_7segmentDisplay("Segment_Top_e_0", "7Seg_vertical", "SegmentA_0_Code",2) </script>
+                        <img class="Segment_Top_0" id="Segment_Top_f_0"> <script> fn_7segmentDisplay("Segment_Top_f_0", "7Seg_vertical", "SegmentA_0_Code",1) </script>
+                        <img class="Segment_Top_0" id="Segment_Top_g_0"> <script> fn_7segmentDisplay("Segment_Top_g_0", "7Seg_horizontal", "SegmentA_0_Code",0) </script>
+
+                        <img class="Segment_Top_1" id="Segment_Top_a_1"> <script> fn_7segmentDisplay("Segment_Top_a_1", "7Seg_horizontal", "SegmentA_1_Code",6) </script>
+                        <img class="Segment_Top_1" id="Segment_Top_b_1"> <script> fn_7segmentDisplay("Segment_Top_b_1", "7Seg_vertical", "SegmentA_1_Code",5) </script>
+                        <img class="Segment_Top_1" id="Segment_Top_c_1"> <script> fn_7segmentDisplay("Segment_Top_c_1", "7Seg_vertical", "SegmentA_1_Code",4) </script>
+                        <img class="Segment_Top_1" id="Segment_Top_d_1"> <script> fn_7segmentDisplay("Segment_Top_d_1", "7Seg_horizontal", "SegmentA_1_Code",3) </script>
+                        <img class="Segment_Top_1" id="Segment_Top_e_1"> <script> fn_7segmentDisplay("Segment_Top_e_1", "7Seg_vertical", "SegmentA_1_Code",2) </script>
+                        <img class="Segment_Top_1" id="Segment_Top_f_1"> <script> fn_7segmentDisplay("Segment_Top_f_1", "7Seg_vertical", "SegmentA_1_Code",1) </script>
+                        <img class="Segment_Top_1" id="Segment_Top_g_1"> <script> fn_7segmentDisplay("Segment_Top_g_1", "7Seg_horizontal", "SegmentA_1_Code",0) </script>
+
+                         <!-- Lights Left  -->
+                        <img class="Segment_Left_0" id="Segment_Left_a_0"> <script> fn_7segmentDisplay("Segment_Left_a_0", "7Seg_vertical", "SegmentB_0_Code",6) </script>
+                        <img class="Segment_Left_0" id="Segment_Left_b_0"> <script> fn_7segmentDisplay("Segment_Left_b_0", "7Seg_horizontal", "SegmentB_0_Code",5) </script>
+                        <img class="Segment_Left_0" id="Segment_Left_c_0"> <script> fn_7segmentDisplay("Segment_Left_c_0", "7Seg_horizontal", "SegmentB_0_Code",4) </script>
+                        <img class="Segment_Left_0" id="Segment_Left_d_0"> <script> fn_7segmentDisplay("Segment_Left_d_0", "7Seg_vertical", "SegmentB_0_Code",3) </script>
+                        <img class="Segment_Left_0" id="Segment_Left_e_0"> <script> fn_7segmentDisplay("Segment_Left_e_0", "7Seg_horizontal", "SegmentB_0_Code",2) </script>
+                        <img class="Segment_Left_0" id="Segment_Left_f_0"> <script> fn_7segmentDisplay("Segment_Left_f_0", "7Seg_horizontal", "SegmentB_0_Code",1) </script>
+                        <img class="Segment_Left_0" id="Segment_Left_g_0"> <script> fn_7segmentDisplay("Segment_Left_g_0", "7Seg_vertical", "SegmentB_0_Code",0) </script>
+
+                        <img class="Segment_Left_1" id="Segment_Left_a_1"> <script> fn_7segmentDisplay("Segment_Left_a_1", "7Seg_vertical", "SegmentB_1_Code",6) </script>
+                        <img class="Segment_Left_1" id="Segment_Left_b_1"> <script> fn_7segmentDisplay("Segment_Left_b_1", "7Seg_horizontal", "SegmentB_1_Code",5) </script>
+                        <img class="Segment_Left_1" id="Segment_Left_c_1"> <script> fn_7segmentDisplay("Segment_Left_c_1", "7Seg_horizontal", "SegmentB_1_Code",4) </script>
+                        <img class="Segment_Left_1" id="Segment_Left_d_1"> <script> fn_7segmentDisplay("Segment_Left_d_1", "7Seg_vertical", "SegmentB_1_Code",3) </script>
+                        <img class="Segment_Left_1" id="Segment_Left_e_1"> <script> fn_7segmentDisplay("Segment_Left_e_1", "7Seg_horizontal", "SegmentB_1_Code",2) </script>
+                        <img class="Segment_Left_1" id="Segment_Left_f_1"> <script> fn_7segmentDisplay("Segment_Left_f_1", "7Seg_horizontal", "SegmentB_1_Code",1) </script>
+                        <img class="Segment_Left_1" id="Segment_Left_g_1"> <script> fn_7segmentDisplay("Segment_Left_g_1", "7Seg_vertical", "SegmentB_1_Code",0) </script>
+
+                        <!-- Lights Right -->
+                        <img class="Segment_Right_0" id="Segment_Right_a_0"> <script> fn_7segmentDisplay("Segment_Right_a_0", "7Seg_vertical", "SegmentB_0_Code",6) </script>
+                        <img class="Segment_Right_0" id="Segment_Right_b_0"> <script> fn_7segmentDisplay("Segment_Right_b_0", "7Seg_horizontal", "SegmentB_0_Code",5) </script>
+                        <img class="Segment_Right_0" id="Segment_Right_c_0"> <script> fn_7segmentDisplay("Segment_Right_c_0", "7Seg_horizontal", "SegmentB_0_Code",4) </script>
+                        <img class="Segment_Right_0" id="Segment_Right_d_0"> <script> fn_7segmentDisplay("Segment_Right_d_0", "7Seg_vertical", "SegmentB_0_Code",3) </script>
+                        <img class="Segment_Right_0" id="Segment_Right_e_0"> <script> fn_7segmentDisplay("Segment_Right_e_0", "7Seg_horizontal", "SegmentB_0_Code",2) </script>
+                        <img class="Segment_Right_0" id="Segment_Right_f_0"> <script> fn_7segmentDisplay("Segment_Right_f_0", "7Seg_horizontal", "SegmentB_0_Code",1) </script>
+                        <img class="Segment_Right_0" id="Segment_Right_g_0"> <script> fn_7segmentDisplay("Segment_Right_g_0", "7Seg_vertical", "SegmentB_0_Code",0) </script>
+
+                        <img class="Segment_Right_1" id="Segment_Right_a_1"> <script> fn_7segmentDisplay("Segment_Right_a_1", "7Seg_vertical", "SegmentB_1_Code",6) </script>
+                        <img class="Segment_Right_1" id="Segment_Right_b_1"> <script> fn_7segmentDisplay("Segment_Right_b_1", "7Seg_horizontal", "SegmentB_1_Code",5) </script>
+                        <img class="Segment_Right_1" id="Segment_Right_c_1"> <script> fn_7segmentDisplay("Segment_Right_c_1", "7Seg_horizontal", "SegmentB_1_Code",4) </script>
+                        <img class="Segment_Right_1" id="Segment_Right_d_1"> <script> fn_7segmentDisplay("Segment_Right_d_1", "7Seg_vertical", "SegmentB_1_Code",3) </script>
+                        <img class="Segment_Right_1" id="Segment_Right_e_1"> <script> fn_7segmentDisplay("Segment_Right_e_1", "7Seg_horizontal", "SegmentB_1_Code",2) </script>
+                        <img class="Segment_Right_1" id="Segment_Right_f_1"> <script> fn_7segmentDisplay("Segment_Right_f_1", "7Seg_horizontal", "SegmentB_1_Code",1) </script>
+                        <img class="Segment_Right_1" id="Segment_Right_g_1"> <script> fn_7segmentDisplay("Segment_Right_g_1", "7Seg_vertical", "SegmentB_1_Code",0) </script>
+                    </div>
+                    <div class="Param-Traffic-Lights-container">
+                        <p id="Bang-dieu-khien-text">BẢNG ĐIỀU KHIỂN</p>
+                        <button id="btn_Start_BDK" onclick="fn_ControlTrafficLightsStart()" >START</button>
+                        <button id="btn_Stop_BDK" onclick="fn_ControlTrafficLightsStop()">STOP</button>
+                        <p id="Thoi-gian-den-do-text"> Thời gian đèn đỏ cài đặt :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(S)</p>
+                        <p id="Thoi-gian-den-vang-text"> Thời gian đèn vàng cài đặt :  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(S)</p>
+                        <p id="Thoi-gian-den-xanh-text"> Thời gian đèn xanh cài đặt :  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(S)</p>
+                        <input id="Time_Red_Display"><script>fn_IOFieldDataShow("RedTime","Time_Red_Display",0)</script>
+                        <input id="Time_Yellow_Display"><script>fn_IOFieldDataShow("YellowTime","Time_Yellow_Display",0)</script>
+                        <input id="Time_Green_Display"><script>fn_IOFieldDataShow("GreenTime","Time_Green_Display",0)</script>
+                </div>
+                </div> 
+            </div>
+        </div>       
+    </body>
+</html> 

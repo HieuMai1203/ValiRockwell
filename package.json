@@ -1,0 +1,25 @@
+{
+  "name": "mixwebserver",
+  "version": "1.0.1",
+  "description": "This is mix system ngoc automation",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --inspect index.js -e ejs,js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "connect-livereload": "^0.6.1",
+    "ejs": "^3.1.6",
+    "express": "^4.17.2",
+    "jquery": "^3.6.0",
+    "kepserverex-js": "^1.0.6",
+    "livereload": "^0.9.3",
+    "lodash": "^4.17.21",
+    "socket.io": "^4.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.21"
+  }
+}
