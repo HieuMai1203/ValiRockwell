@@ -41,12 +41,32 @@
     text-align: center;
     border-right: 4px solid rgb(5, 31, 101);
     border-radius: 20px;
+    
+}
+
+#btt_Setting_BilletDrill{
+    border: rgb(40, 58, 107); 
+    background-color: rgb(40, 58, 107);
+    border: none; color:  #ecf0f1;  
+    text-align: left; 
+    display: inline-block;
+    font-size: 18px; 
+    font-weight: bold;
+    font-family: Montserrat;
+    cursor: pointer;
+    position: absolute; 
+    width: 300px; height: 80px; 
+    left: 600px; top: 0px;
+    padding-left: 20px;
+    text-align: center;
+    border-right: 4px solid rgb(5, 31, 101);
+    border-radius: 20px;
+    
 }
 #Screen_Setting_Traffic_Lights {
     position: absolute; 
     left: 0px; top: 80px; 
-    width: 1320px; height: 645px;
-    background-color: rgb(43, 35, 204); 
+    width: 1320px; height: 645px; 
     border-radius: 20px;
     background-color: rgb(15, 228, 210); 
 }
@@ -54,7 +74,13 @@
     position: absolute; 
     left: 0px; top: 80px; 
     width: 1320px; height: 645px;
-    background-color: rgb(204, 35, 46); 
+    border-radius: 20px;
+    background-color: rgb(15, 228, 210); 
+}
+#Screen_Setting_BilletDrill {
+    position: absolute; 
+    left: 0px; top: 80px; 
+    width: 1320px; height: 645px;
     border-radius: 20px;
     background-color: rgb(15, 228, 210); 
 }
@@ -68,7 +94,7 @@
 
 }
 
-#Cai-dat-thong-so-text{
+#Cai-dat-thong-so-Traffic-lights-text{
     position: absolute;
     font-family: Montserrat ;
     font-weight: bold;
@@ -157,4 +183,84 @@
     font-weight: bold;
     font-family: Montserrat ;
     text-align: center ;
+}
+
+.Param-Setting-BilletDrill-Container{
+    position: absolute;
+    left: 360px; top: 100px;
+    width: 610px ; height: 470px;
+    border:solid rgb(40, 58, 107) 3px;
+    border-radius: 20px;
+
+}
+
+#Cai-dat-thong-so-BilletDrill-text{
+    position: absolute;
+    font-family: Montserrat ;
+    font-weight: bold;
+    font-size: 28px;
+    left:90px;  top:20px;
+    color: black;
+    border-bottom: 7px rgb(40, 58, 107) solid ;
+    text-align: center;
+    white-space: nowrap;
+    padding-bottom: 30px;
+    width: 412px;
+}
+
+#Billet_Setting{
+    position: absolute;
+    width: 160px; height: 55px;
+    left:350px; top: 105px;
+    background-color: rgb(15, 228, 210);
+    border: none;
+    border-bottom: 2px solid black;
+    outline: none;
+    font-size: 18px;
+   font-weight: bold;
+    font-family: Montserrat ;
+    text-align: center ;
+}
+
+#Hole_Setting{
+    position: absolute;
+    width: 160px; height: 55px;
+    left:350px; top: 205px;
+    background-color: rgb(15, 228, 210);
+    border: none;
+    border-bottom: 2px solid black;
+    outline: none;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: Montserrat ;
+    text-align: center ;
+}
+
+#btt_BilletDrill_Confirm{
+    position: absolute;
+    width: 206px; height: 61px;
+    left: 200px; top:385px;
+    border-radius: 10px;
+    background-color:rgb(40, 58, 107) ;
+    color: #ecf0f1;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: Montserrat ;
+}
+
+#So-phoi-text{
+    position: absolute;
+    left: 20px; top: 120px;
+    font-family: Montserrat;
+    font-weight: bold;
+    font-size: 23px;
+    opacity: 0.8;
+}
+#So-lo-text{
+    position: absolute;
+    left: 20px; top: 220px;
+    font-family: Montserrat;
+    font-weight: bold;
+    font-size: 23px;
+    opacity: 0.8;
 }

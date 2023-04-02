@@ -57,40 +57,46 @@
         </div> -->
     </head>
     <body>
-    <!-- ////////////// Code cho slidebar////////////// -->
+        <!-- ////////////// Code cho slidebar////////////// -->
         <div id = "slidebar">
             <img id="logo_BK" src="images/logo_bachkhoa.png">
             <img id="logo_RW" src="images/logo_Rockwell.png">
             <!--Nút chọn màn hình chính-->
             <button id="btt_Monitor" onclick=" 
-                fn_ScreenChange('Screen_Monitor','Screen_Setting','Screen_Report','Screen_Alarm','Screen_History','btt_Monitor','btt_Setting','btt_Report','btt_Alarm','btt_History');
+                fn_ScreenChange('Screen_Monitor','Screen_Setting','Screen_Report','Screen_Alarm','Screen_History','Screen_Introduction','btt_Monitor','btt_Setting','btt_Report','btt_Alarm','btt_History','btt_Introduction');
             "><i class="fa-solid fa-desktop"></i> GIÁM SÁT</button>
            
             <!--Nút chọn màn hình 1-->
             <button id="btt_Setting" onclick=" 
-               fn_ScreenChange('Screen_Setting','Screen_Report','Screen_Alarm','Screen_History','Screen_Monitor','btt_Setting','btt_Monitor','btt_Report','btt_Alarm','btt_History');
+               fn_ScreenChange('Screen_Setting','Screen_Report','Screen_Alarm','Screen_History','Screen_Monitor','Screen_Introduction','btt_Setting','btt_Monitor','btt_Report','btt_Alarm','btt_History','btt_Introduction');
             "><i class="fa-solid fa-gear"></i> CÀI ĐẶT</button>         
-             <button id="btt_Report" onclick=" 
-              fn_ScreenChange('Screen_Report','Screen_Alarm','Screen_History','Screen_Monitor','Screen_Setting','btt_Report','btt_Monitor','btt_Setting','btt_Alarm','btt_History');
+           
+           <button id="btt_Report" onclick=" 
+              fn_ScreenChange('Screen_Report','Screen_Alarm','Screen_History','Screen_Monitor','Screen_Setting','Screen_Introduction','btt_Report','btt_Monitor','btt_Setting','btt_Alarm','btt_History','btt_Introduction');
               
             "><i class="fa-solid fa-newspaper"></i> BÁO CÁO </button>    
-             <button id="btt_Alarm" onclick=" 
-                fn_ScreenChange('Screen_Alarm','Screen_History','Screen_Monitor','Screen_Setting','Screen_Report','btt_Alarm','btt_Monitor','btt_Setting','btt_Report','btt_History');
+            
+            <button id="btt_Alarm" onclick=" 
+                fn_ScreenChange('Screen_Alarm','Screen_History','Screen_Monitor','Screen_Setting','Screen_Report','Screen_Introduction','btt_Alarm','btt_Monitor','btt_Setting','btt_Report','btt_History','btt_Introduction');
              "><i class="fa-solid fa-triangle-exclamation"></i> CẢNH BÁO</button> 
-              <button id="btt_History" onclick=" 
-               fn_ScreenChange('Screen_History','Screen_Monitor','Screen_Setting','Screen_Report','Screen_Alarm','btt_History','btt_Monitor','btt_Setting','btt_Report','btt_Alarm');
-             "><i class="fa-solid fa-clock-rotate-left"></i> LỊCH SỬ</button>          
+              
+            <button id="btt_History" onclick=" 
+               fn_ScreenChange('Screen_History','Screen_Monitor','Screen_Setting','Screen_Report','Screen_Alarm','Screen_Introduction','btt_History','btt_Monitor','btt_Setting','btt_Report','btt_Alarm','btt_Introduction');
+             "><i class="fa-solid fa-clock-rotate-left"></i> LỊCH SỬ</button>  
+            <button id="btt_Introduction" onclick=" 
+              fn_ScreenChange('Screen_Introduction','Screen_History','Screen_Monitor','Screen_Setting','Screen_Report','Screen_Alarm','btt_Introduction','btt_History','btt_Monitor','btt_Setting','btt_Report','btt_Alarm');
+             "><i class="fa-solid fa-clock-rotate-left"></i> GIỚI THIỆU</button>           
         </div>
-    <!-- //////////////Code cho màn hình tự động////////////// -->
+    
          
-    <!-- //////////////Code cho màn hình bằng tay////////////// -->
+        <!-- //////////////Code cho màn hình bằng tay////////////// -->
         <div id = "Screen_Setting">
-            <button id="btt_Setting_Traffic_Lights" onclick="fn_ScreenChange_Sub('Screen_Setting_Traffic_Lights','Screen_Setting_Inverter','btt_Setting_Traffic_Lights','btt_Setting_Inverter')" >ĐÈN GIAO THÔNG</button>
-
-            <button id="btt_Setting_Inverter" onclick="fn_ScreenChange_Sub('Screen_Setting_Inverter','Screen_Setting_Traffic_Lights','btt_Setting_Inverter','btt_Setting_Traffic_Lights')">BIẾN TẦN & ĐỘNG CƠ</button>
+            <button id="btt_Setting_Traffic_Lights" onclick="fn_ScreenChange_Sub('Screen_Setting_Traffic_Lights','Screen_Setting_Inverter','Screen_Setting_BilletDrill','btt_Setting_Traffic_Lights','btt_Setting_Inverter','btt_Setting_BilletDrill')" >ĐÈN GIAO THÔNG</button>
+            <button id="btt_Setting_Inverter" onclick="fn_ScreenChange_Sub('Screen_Setting_Inverter','Screen_Setting_Traffic_Lights','Screen_Setting_BilletDrill','btt_Setting_Inverter','btt_Setting_Traffic_Lights','btt_Setting_BilletDrill')">BIẾN TẦN & ĐỘNG CƠ</button>
+            <button id="btt_Setting_BilletDrill" onclick="fn_ScreenChange_Sub('Screen_Setting_BilletDrill','Screen_Setting_Inverter','Screen_Setting_Traffic_Lights','btt_Setting_BilletDrill','btt_Setting_Inverter','btt_Setting_Traffic_Lights')">KHOAN PHÔI</button>
             <div id="Screen_Setting_Traffic_Lights">
                 <div class="Param-Setting-Trafic-Lights-Container">
-                    <div id="Cai-dat-thong-so-text">CÀI ĐẶT THÔNG SỐ</div>
+                    <div id="Cai-dat-thong-so-Traffic-lights-text">CÀI ĐẶT THÔNG SỐ</div>
                     <div id="Thoi-gian-den-do-cai-dat-text">Thời gian đèn đỏ :</div>
                     <div id="Thoi-gian-den-vang-cai-dat-text">Thời gian đèn vàng :</div>
                     <div id="Thoi-gian-den-xanh-cai-dat-text">Thời gian đèn xanh :</div>
@@ -104,12 +110,22 @@
             <div id="Screen_Setting_Inverter">
                 <p> cai dat bien tan</p>
             </div> 
-        </div>
-            
+
+            <div id="Screen_Setting_BilletDrill">
+                <div class="Param-Setting-BilletDrill-Container">
+                    <div id="Cai-dat-thong-so-BilletDrill-text">CÀI ĐẶT THÔNG SỐ</div>
+                    <div id="So-phoi-text">Số phôi cân khoan :</div>
+                    <div id="So-lo-text">Sô lỗ cần khoan mỗi phôi :</div>
+                    <button id="btt_BilletDrill_Confirm" onclick="fn_SaveDataTrafficLights()">XÁC NHẬN</button>
+                    <input id="Billet_Setting">
+                    <input id="Hole_Setting">
+                </div> 
+            </div>
+        </div> 
         
             
                        
-         <!-- //////////////Code cho màn hình bằng tay////////////// -->
+            
         <div id = "Screen_Report">
             <p>Đây là màn hình báo cáo</p>
         </div> 
@@ -121,14 +137,24 @@
         <div id = "Screen_History">
             <p>Đây là màn hình lịch sử</p>
         </div>   
+
+        <div id = "Screen_Introduction">
+            <p>Đây là màn hình gioi thieu</p>
+        </div> 
+        
         <div id = "Screen_Monitor">
             
-            <button id="btt_Monitor_Traffic_Lights" onclick="fn_ScreenChange_Sub('Screen_Monitor_Traffic_Lights','Screen_Monitor_Inverter','btt_Monitor_Traffic_Lights','btt_Monitor_Inverter')" >ĐÈN GIAO THÔNG</button>
-
-            <button id="btt_Monitor_Inverter" onclick="fn_ScreenChange_Sub('Screen_Monitor_Inverter','Screen_Monitor_Traffic_Lights','btt_Monitor_Inverter','btt_Monitor_Traffic_Lights')">BIẾN TẦN & ĐỘNG CƠ</button>
+            <button id="btt_Monitor_Traffic_Lights" onclick="fn_ScreenChange_Sub('Screen_Monitor_Traffic_Lights','Screen_Monitor_Inverter','Screen_Monitor_BilletDrill','btt_Monitor_Traffic_Lights','btt_Monitor_Inverter','btt_Monitor_BilletDrill')" >ĐÈN GIAO THÔNG</button>
+            <button id="btt_Monitor_Inverter" onclick="fn_ScreenChange_Sub('Screen_Monitor_Inverter','Screen_Monitor_Traffic_Lights','Screen_Monitor_BilletDrill','btt_Monitor_Inverter','btt_Monitor_Traffic_Lights','btt_Monitor_BilletDrill')">BIẾN TẦN & ĐỘNG CƠ</button>
+            <button id="btt_Monitor_BilletDrill" onclick="fn_ScreenChange_Sub('Screen_Monitor_BilletDrill','Screen_Monitor_Inverter','Screen_Monitor_Traffic_Lights','btt_Monitor_BilletDrill','btt_Monitor_Inverter','btt_Monitor_Traffic_Lights')">KHOAN PHÔI</button>
             <div id="Screen_Monitor_Inverter">
+                <p> giam sat bien tan</p>
+            </div>
+
+            <div id="Screen_Monitor_BilletDrill">
                 <img src="images/BilletDrill/BilletDrill.png">
             </div>
+
             <div  id="Screen_Monitor_Traffic_Lights">
                 
                 <div class="background_traffic_lights" > 

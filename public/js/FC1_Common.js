@@ -1,11 +1,12 @@
 // Chương trình con chuyển trang
-function fn_ScreenChange(scr_1, scr_2,scr_3,scr_4,scr_5,btn_1,btn_2,btn_3,btn_4,btn_5)
+function fn_ScreenChange(scr_1, scr_2,scr_3,scr_4,scr_5,scr_6,btn_1,btn_2,btn_3,btn_4,btn_5,btn_6)
 {
     document.getElementById(scr_1).style.display = 'inline';   // Hiển thị trang được chọn
     document.getElementById(scr_2).style.display = 'none';    // Ẩn trang 2
     document.getElementById(scr_3).style.display = 'none';    // Ẩn trang 3
     document.getElementById(scr_4).style.display = 'none';    // Ẩn trang 4
     document.getElementById(scr_5).style.display = 'none';    // Ẩn trang 5
+    document.getElementById(scr_6).style.display = 'none';    // Ẩn trang 5
    
     document.getElementById(btn_1).style.backgroundColor=" #ecf0f1";
     document.getElementById(btn_1).style.color="rgb(40, 58, 107)";
@@ -17,17 +18,23 @@ function fn_ScreenChange(scr_1, scr_2,scr_3,scr_4,scr_5,btn_1,btn_2,btn_3,btn_4,
     document.getElementById(btn_4).style.color=" #ecf0f1";
     document.getElementById(btn_5).style.backgroundColor="rgb(40, 58, 107)";
     document.getElementById(btn_5).style.color=" #ecf0f1";
+    document.getElementById(btn_6).style.backgroundColor="rgb(40, 58, 107)";
+    document.getElementById(btn_6).style.color=" #ecf0f1";
 }
-function fn_ScreenChange_Sub(scr_1, scr_2,btn_1,btn_2)
+function fn_ScreenChange_Sub(scr_1, scr_2,scr_3,btn_1,btn_2,btn_3)
 {
     document.getElementById(scr_1).style.display = 'inline';   // Hiển thị trang được chọn
     document.getElementById(scr_2).style.display = 'none';    // Ẩn trang 2
+    document.getElementById(scr_3).style.display = 'none';    // Ẩn trang 2
    
     document.getElementById(btn_1).style.backgroundColor=" #ecf0f1";
     document.getElementById(btn_1).style.color="rgb(40, 58, 107)";
 
     document.getElementById(btn_2).style.backgroundColor="rgb(40, 58, 107)";
     document.getElementById(btn_2).style.color=" #ecf0f1";
+
+    document.getElementById(btn_3).style.backgroundColor="rgb(40, 58, 107)";
+    document.getElementById(btn_3).style.color=" #ecf0f1";
     
 }
 
