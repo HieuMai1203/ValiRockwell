@@ -1,0 +1,43 @@
+/*Màn hình tự động*/
+#Screen_Introduction {
+    position: absolute; 
+    left: 202px; top: 2px; 
+    width: 1320px; height: 725px;
+    background-color: rgb(15, 228, 210); 
+    border-radius: 20px;
+}
+
+#text-1{
+    position: absolute;
+    left: 70px; top:30px;
+    font-family: Montserrat;
+    font-weight: bold;
+    font-size: 20px;
+    color: red;
+    text-decoration: underline 2px;
+}
+
+#text-2{
+    position: absolute;
+    left: 20px; top:80px;
+    font-family: Montserrat;
+    font-size: 18px;
+    color: black;
+}
+br {
+    display: block;
+    content: "";
+    margin-top: 20px;
+    line-height: 0;
+  }
+
+#list_devices{
+    list-style-type:none;
+    position: absolute;
+    left: -20px; top:240px;
+    font-family: Montserrat;
+    font-size: 18px;
+    color: black;
+    line-height: 40px;
+}
+

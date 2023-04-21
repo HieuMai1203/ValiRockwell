@@ -6,10 +6,10 @@
         <link rel="stylesheet" href= "CSS/slidebar.css">
         <link rel="stylesheet" href= "CSS/scr_Monitor.css">
         <link rel="stylesheet" href= "CSS/scr_Setting.css">
-        <link rel="stylesheet" href= "CSS/scr_Report.css">
         <link rel="stylesheet" href= "CSS/scr_Alarm.css">
         <link rel="stylesheet" href= "CSS/scr_History.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" 
+        <link rel="stylesheet" href= "CSS/scr_Introduction.css">
+        <link rel="stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
 
        
 
@@ -20,12 +20,17 @@
         <script src = "js/FC2_UserManagement.js"></script>
         <script src = "js/FC3_ScreenMonitor.js"></script>
         <script src = "js/FC4_ScreenSetting.js"></script>
+        <script src = "js/FC5_ScreenHistory.js"></script>
+        <script src = "js/FC6_ScreenAlarm.js"></script>
+        <script src = "js/jquery-3.6.4.min.js"></script>
+        <script src = "js/plotly-2.8.3.min.js"></script>
+        <script src = "js/FileSaver.js"></script>
         
         <script>
             var socket = io("localhost:3000"); // IP tĩnh (hoặc IP động, hoặc localhost)
         </script>
         <!-- ////////////// CHƯƠNG TRÌNH ĐĂNG NHẬP HỆ THỐNG //////////////  -->
-        <!-- <div id="div_login">
+        <div id="div_login">
             <div id="id01" class="modal">
                 <form id = "modal-content1" class="modal-content animate">
                 <div id = "img_container" class="imgcontainer">
@@ -54,7 +59,7 @@
                 </div>
                 </form>
             </div>
-        </div> -->
+        </div>
     </head>
     <body>
         <!-- ////////////// Code cho slidebar////////////// -->
@@ -63,29 +68,31 @@
             <img id="logo_RW" src="images/logo_Rockwell.png">
             <!--Nút chọn màn hình chính-->
             <button id="btt_Monitor" onclick=" 
-                fn_ScreenChange('Screen_Monitor','Screen_Setting','Screen_Report','Screen_Alarm','Screen_History','Screen_Introduction','btt_Monitor','btt_Setting','btt_Report','btt_Alarm','btt_History','btt_Introduction');
+                fn_ScreenChange('Screen_Monitor','Screen_Setting','Screen_Alarm','Screen_History','Screen_Introduction','btt_Monitor','btt_Setting','btt_Alarm','btt_History','btt_Introduction');
             "><i class="fa-solid fa-desktop"></i> GIÁM SÁT</button>
            
             <!--Nút chọn màn hình 1-->
             <button id="btt_Setting" onclick=" 
-               fn_ScreenChange('Screen_Setting','Screen_Report','Screen_Alarm','Screen_History','Screen_Monitor','Screen_Introduction','btt_Setting','btt_Monitor','btt_Report','btt_Alarm','btt_History','btt_Introduction');
+               fn_ScreenChange('Screen_Setting','Screen_Alarm','Screen_History','Screen_Monitor','Screen_Introduction','btt_Setting','btt_Monitor','btt_Alarm','btt_History','btt_Introduction');
             "><i class="fa-solid fa-gear"></i> CÀI ĐẶT</button>         
-           
-           <button id="btt_Report" onclick=" 
-              fn_ScreenChange('Screen_Report','Screen_Alarm','Screen_History','Screen_Monitor','Screen_Setting','Screen_Introduction','btt_Report','btt_Monitor','btt_Setting','btt_Alarm','btt_History','btt_Introduction');
-              
-            "><i class="fa-solid fa-newspaper"></i> BÁO CÁO </button>    
             
             <button id="btt_Alarm" onclick=" 
-                fn_ScreenChange('Screen_Alarm','Screen_History','Screen_Monitor','Screen_Setting','Screen_Report','Screen_Introduction','btt_Alarm','btt_Monitor','btt_Setting','btt_Report','btt_History','btt_Introduction');
-             "><i class="fa-solid fa-triangle-exclamation"></i> CẢNH BÁO</button> 
+                fn_ScreenChange('Screen_Alarm','Screen_History','Screen_Monitor','Screen_Setting','Screen_Introduction','btt_Alarm','btt_Monitor','btt_Setting','btt_History','btt_Introduction');
+                fn_Alarm_Show();
+            "><i class="fa-solid fa-triangle-exclamation"></i> CẢNH BÁO</button> 
               
             <button id="btt_History" onclick=" 
-               fn_ScreenChange('Screen_History','Screen_Monitor','Screen_Setting','Screen_Report','Screen_Alarm','Screen_Introduction','btt_History','btt_Monitor','btt_Setting','btt_Report','btt_Alarm','btt_Introduction');
-             "><i class="fa-solid fa-clock-rotate-left"></i> LỊCH SỬ</button>  
+               fn_ScreenChange('Screen_History','Screen_Monitor','Screen_Setting','Screen_Alarm','Screen_Introduction','btt_History','btt_Monitor','btt_Setting','btt_Alarm','btt_Introduction');
+               fn_Table01_SQL_Show();"
+            "><i class="fa-solid fa-newspaper"></i> BÁO CÁO</button>  
+
             <button id="btt_Introduction" onclick=" 
-              fn_ScreenChange('Screen_Introduction','Screen_History','Screen_Monitor','Screen_Setting','Screen_Report','Screen_Alarm','btt_Introduction','btt_History','btt_Monitor','btt_Setting','btt_Report','btt_Alarm');
-             "><i class="fa-solid fa-clock-rotate-left"></i> GIỚI THIỆU</button>           
+               fn_ScreenChange('Screen_Introduction','Screen_History','Screen_Monitor','Screen_Setting','Screen_Alarm','btt_Introduction','btt_History','btt_Monitor','btt_Setting','btt_Alarm');
+            "><i class="fa-solid fa-circle-info fa-lg"></i> GIỚI THIỆU</button>           
+        
+            <button id="btt_Logout" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i></i> ĐĂNG XUẤT</button>
+
+
         </div>
     
          
@@ -108,15 +115,20 @@
             </div>
 
             <div id="Screen_Setting_Inverter">
-                <p> cai dat bien tan</p>
+                <div class="Param-Setting-Inverter-Container">
+                    <div id="Cai-dat-thong-so-Inverter-text">CÀI ĐẶT THÔNG SỐ</div>
+                    <div id="Speed-text">Tốc độ động cơ :</div>
+                    <button id="btt_Inverter_Confirm" onclick="fn_SaveDataInverter()">XÁC NHẬN</button>
+                    <input id="Speed_Setting">
+                </div> 
             </div> 
 
             <div id="Screen_Setting_BilletDrill">
                 <div class="Param-Setting-BilletDrill-Container">
                     <div id="Cai-dat-thong-so-BilletDrill-text">CÀI ĐẶT THÔNG SỐ</div>
-                    <div id="So-phoi-text">Số phôi cân khoan :</div>
+                    <div id="So-phoi-text">Số phôi cần khoan :</div>
                     <div id="So-lo-text">Sô lỗ cần khoan mỗi phôi :</div>
-                    <button id="btt_BilletDrill_Confirm" onclick="fn_SaveDataTrafficLights()">XÁC NHẬN</button>
+                    <button id="btt_BilletDrill_Confirm" onclick="">XÁC NHẬN</button>
                     <input id="Billet_Setting">
                     <input id="Hole_Setting">
                 </div> 
@@ -124,23 +136,72 @@
         </div> 
         
             
-                       
-            
-        <div id = "Screen_Report">
-            <p>Đây là màn hình báo cáo</p>
-        </div> 
-     <!-- //////////////Code cho màn hình bằng tay////////////// -->
+        
+        <!-- //////////////Code cho màn hình cảnh báo////////////// -->
         <div id = "Screen_Alarm">
-            <p>Đây là màn hình cảnh báo</p>
-        </div>   
-     <!-- //////////////Code cho màn hình bằng tay////////////// -->
+            <p style="font-family: Montserrat; font-weight: bold; font-size: 25px; position: absolute; left: 450px;top:20px" ><i class="fa-solid fa-triangle-exclamation"></i> CẢNH BÁO VẬN HÀNH KHOAN PHÔI</p>
+            <div id = "table_Alarm-Container">
+                <table id="table_Alarm" >
+                    <thead>
+                    <tr>
+                        <th style="border-radius: 10px 0 0 10px; ">Thời gian</th>
+                        <th>ID cảnh báo</th>
+                        <th>nội dung cảnh báo</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+            <!--Date time piker-->
+            <label id="Alarm_lb_Start">TỪ:</label>
+            <input id="Alarm_Search_Start" type="datetime-local">
+            <label id="Alarm_lb_End">ĐẾN:</label>
+            <input id="Alarm_Search_End" type="datetime-local">
+            <!--Nút tìm kiếm-->
+            <button id="btt_Alarm_Search" class="btn" onclick="fn_Alarm_By_Time();">TÌM KIẾM</button>
+        </div>    
+        <!-- //////////////Code cho màn lịch sử////////////// -->
         <div id = "Screen_History">
-            <p>Đây là màn hình lịch sử</p>
+            <p style="font-family: Montserrat; font-weight: bold; font-size: 25px; position: absolute; left: 450px;top:20px" ><i class="fa-solid fa-newspaper"></i> LỊCH SỬ VẬN HÀNH KHOAN PHÔI</p>
+            <div id = "table_History_Container">
+                <table id="table_History" >
+                    <thead>
+                    <tr>
+                        <th style="border-radius: 10px 0 0 10px; font-family:Montserrat; width: 100px;height: 30px;">Thời gian</th>
+                        <th style="font-family:Montserrat;width: 100px;">Số phôi đã khoan</th>
+                        <th style="font-family:Montserrat;width: 100px;">Số lỗ trên một phôi</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+
+                <!--Date time piker-->
+                <label id="History_lb_Start">TỪ:</label>
+                <input id="History_Search_Start" type="datetime-local">
+                <label id="History_lb_End">ĐẾN:</label>
+                <input id="History_Search_End" type="datetime-local">
+                <!--Nút tìm kiếm-->
+                <button id="btt_History_Search" class="btn" onclick="fn_SQL_By_Time();"></i> TÌM KIẾM</button>
+                <button id="btt_History_Excel" class="btn" onclick="fn_excel();"></i> BÁO CÁO</button>
+        </div>  
+    <!-- //////////////Code cho màn giới thiệu////////////// -->
+         
+        <div id = "Screen_Introduction">
+            <img src="images/ValiDiagram.png">
+            <p id="text-1">MÔ HÌNH VALI ROCKWELL</p>
+            <p id="text-2">Bộ mô hình Vali Rockwell được xây dựng để<br> 
+                phục vụ học tập nghiên cứu, làm quen với<br> 
+                các dòng thiết bị tự động hóa công nghiệp<br> 
+                của hãng Rockwell, bao gồm :</p>
+            <ul id="list_devices">
+                <li>🡆 PLC Micro 820 và PLC Micro 850</li>
+                <li>🡆 Biến tần Power Flex 525</li>
+                <li>🡆 Động cơ 3 pha và Encoder</li>
+                <li>🡆 Panel I/O </li>
+                <li>🡆 Switch mạng Stratix 2000</li>
+            </ul>
+           
         </div>   
 
-        <div id = "Screen_Introduction">
-            <p>Đây là màn hình gioi thieu</p>
-        </div> 
         
         <div id = "Screen_Monitor">
             
@@ -148,11 +209,86 @@
             <button id="btt_Monitor_Inverter" onclick="fn_ScreenChange_Sub('Screen_Monitor_Inverter','Screen_Monitor_Traffic_Lights','Screen_Monitor_BilletDrill','btt_Monitor_Inverter','btt_Monitor_Traffic_Lights','btt_Monitor_BilletDrill')">BIẾN TẦN & ĐỘNG CƠ</button>
             <button id="btt_Monitor_BilletDrill" onclick="fn_ScreenChange_Sub('Screen_Monitor_BilletDrill','Screen_Monitor_Inverter','Screen_Monitor_Traffic_Lights','btt_Monitor_BilletDrill','btt_Monitor_Inverter','btt_Monitor_Traffic_Lights')">KHOAN PHÔI</button>
             <div id="Screen_Monitor_Inverter">
-                <p> giam sat bien tan</p>
+                
+                <div class="Param-Inverter-container">   
+                    <p id="Bang-dieu-khien-2-text">BẢNG ĐIỀU KHIỂN</p>
+                    <button id="btn_Start_BDK_2" onclick="fn_ControlInverterStart()" >START</button> 
+                    <button id="btn_Stop_BDK_2" onclick="fn_ControlInverterStop()">STOP</button>
+                    <button id="btn_Jog_BDK"  onmousedown="socket.emit('cmd_Inverter_control_Jog', true);" onmouseup="socket.emit('cmd_Inverter_control_Jog', false);">JOG</button>
+                    <button id="btn_Fwd" onclick="fn_ControlInverterFwd()"><i class="fa-solid fa-left-long fa-xl"></i></button>
+                    <button id="btn_Rev" onclick="fn_ControlInverterRev()"><i class="fa-solid fa-right-long fa-xl"></i></button>
+                    <button id="btn_10Hz" onclick="fn_SaveDataInverterPreset(10)">10Hz</button>
+                    <button id="btn_20Hz" onclick="fn_SaveDataInverterPreset(20)">20Hz</button>
+                    <button id="btn_30Hz" onclick="fn_SaveDataInverterPreset(30)">30Hz</button>
+                    <button id="btn_40Hz" onclick="fn_SaveDataInverterPreset(40)">40Hz</button>
+                    <p id="Toc-do-cai-dat-text"> Tốc độ cài đặt :</p>
+                    <p id="Toc-do-hien-tai-text"> Tốc độ hiện tại :</p>
+                    <input id="Speed_SP" disabled="disabled" type="text"><script>fn_IOFieldDataShow("Inverter_Speed_SP","Speed_SP",0)</script>
+                    <input id="Speed_PV" disabled="disabled" type="text"><script>fn_IOFieldDataShow("Inverter_Speed_PV","Speed_PV", 2)</script>
+                    
+                </div>
+                <div id="plot-Container">
+                    <script>
+                        var data_trend = 0;
+                        socket.on("Inverter_Speed_PV",function(data){
+                            data_trend = data;
+                        });
+                        Plotly.newPlot('plot-Container',[{
+                            y:[data_trend],
+                            type:'line'
+                        }],{
+                            title: 'Biểu đồ tốc độ động cơ theo thời gian',
+                            xaxis: {
+                                title: 'Thời gian (100ms)'
+                            },
+                            yaxis: {
+                                title: 'Tốc độ (Hz)'
+                            } 
+                        });
+                            var cnt = 0;
+                        setInterval(function(){
+
+                            Plotly.extendTraces('plot-Container',{ y:[[data_trend]]}, [0]);
+                            cnt++;
+                            if(cnt > 300) {
+                                Plotly.relayout('plot-Container',{
+                                    xaxis: {
+                                        range: [cnt-300,cnt]
+                                    }
+                                });
+                            }
+                        },100);
+                    </script>  
+                </div>
+                
             </div>
 
             <div id="Screen_Monitor_BilletDrill">
                 <img src="images/BilletDrill/BilletDrill.png">
+                <img id="Billet_Mode"> <script>fn_SymbolStatusBillet("Billet_Mode", "Mode", "Billet_Auto_Manu"   )</script>
+                <img id="A1"> <script>fn_SymbolStatusBillet("A1", "LS1+", "Billet_A1"   )</script>
+                <img id="B1"> <script>fn_SymbolStatusBillet("B1", "LS1-", "Billet_B1"   )</script>
+                <img id="A2"> <script>fn_SymbolStatusBillet("A2", "LS1+", "Billet_A2"   )</script>
+                <img id="B2"> <script>fn_SymbolStatusBillet("B2", "LS1-", "Billet_B2"   )</script>
+                <img id="A3"> <script>fn_SymbolStatusBillet("A3", "LS3+", "Billet_A3"   )</script>
+                <img id="B3"> <script>fn_SymbolStatusBillet("B3", "LS3-", "Billet_B3"   )</script>
+                <img id="A4"> <script>fn_SymbolStatusBillet("A4", "LS4+", "Billet_A4"   )</script>
+                <img id="B4"> <script>fn_SymbolStatusBillet("B4", "LS4-", "Billet_B4"   )</script>
+                <img id="Guard"> <script>fn_SymbolStatusBillet("Guard", "sensor", "Billet_Guard"   )</script> 
+                <div class="Param-BilletDrill-container">   
+                    <p id="Bang-dieu-khien-1-text">BẢNG ĐIỀU KHIỂN</p>
+                    <button id="btn_Start_BDK_1" onclick="fn_ControlBilletStart()" >START</button> 
+                    <button id="btn_Stop_BDK_1" onclick="fn_ControlBilletStop()">STOP</button>
+                    <button id="btn_Pause_BDK_1" onclick="fn_ControlBilletPause()">PAUSE</button>
+                    <p id="So-phoi-cai-dat-text"> Số phôi cài đặt :</p>
+                    <p id="So-lo-cai-dat-text"> Số lỗ cài đặt :</p>
+                    <input id="Billet_Display" disabled="disabled"><script>fn_IOFieldDataShow("Billet_So_phoi_IN","Billet_Display",0)</script>
+                    <input id="Hole_Display" disabled="disabled"><script>fn_IOFieldDataShow("Billet_So_lo_IN","Hole_Display",0)</script>
+                    <p id="So-phoi-da-khoan-text"> Số phôi đã khoan :</p>
+                    <p id="So-lo-da-khoan-text"> Số lỗ đã khoan :</p>
+                    <input id="Billet_Drilled" disabled="disabled"><script>fn_IOFieldDataShow("Billet_So_phoi_OUT","Billet_Drilled",0)</script>
+                    <input id="Hole_Drilled" disabled="disabled"><script>fn_IOFieldDataShow("Billet_So_lo_OUT","Hole_Drilled",0)</script>
+                </div>
             </div>
 
             <div  id="Screen_Monitor_Traffic_Lights">
@@ -161,90 +297,90 @@
                     <img id="traffic_lights_background" src="images/traffic_lights/NGA4.png"> 
                     <img id="Time_background"> <script>fn_SymbolStatus("Time_background", "Time", "LightSensor")</script> 
                     <div class="Lights-container">
-                        <img class="Lights_Bot" id="Light_Bot_Red">   <script>fn_SymbolStatus("Light_Bot_Red", "Red", "RedLightA"   )</script>
-                        <img class="Lights_Bot" id="Light_Bot_Yellow"><script>fn_SymbolStatus("Light_Bot_Yellow", "Yellow", "YellowLightA"   )</script>
-                        <img class="Lights_Bot" id="Light_Bot_Green"> <script>fn_SymbolStatus("Light_Bot_Green", "Green", "GreenLightA"   )</script>
+                        <img class="Lights_Bot" id="Light_Bot_Red">   <script>fn_SymbolStatus("Light_Bot_Red", "Red", "Traffic_RedLightA"   )</script>
+                        <img class="Lights_Bot" id="Light_Bot_Yellow"><script>fn_SymbolStatus("Light_Bot_Yellow", "Yellow", "Traffic_YellowLightA"   )</script>
+                        <img class="Lights_Bot" id="Light_Bot_Green"> <script>fn_SymbolStatus("Light_Bot_Green", "Green", "Traffic_GreenLightA"   )</script>
 
-                        <img class="Lights_Top" id="Light_Top_Red">   <script>fn_SymbolStatus("Light_Top_Red", "Red", "RedLightA"   )</script>
-                        <img class="Lights_Top" id="Light_Top_Yellow"><script>fn_SymbolStatus("Light_Top_Yellow", "Yellow", "YellowLightA"   )</script>
-                        <img class="Lights_Top" id="Light_Top_Green"> <script>fn_SymbolStatus("Light_Top_Green", "Green", "GreenLightA"   )</script>
+                        <img class="Lights_Top" id="Light_Top_Red">   <script>fn_SymbolStatus("Light_Top_Red", "Red", "Traffic_RedLightA"   )</script>
+                        <img class="Lights_Top" id="Light_Top_Yellow"><script>fn_SymbolStatus("Light_Top_Yellow", "Yellow", "Traffic_YellowLightA"   )</script>
+                        <img class="Lights_Top" id="Light_Top_Green"> <script>fn_SymbolStatus("Light_Top_Green", "Green", "Traffic_GreenLightA"   )</script>
 
-                        <img class="Lights_Left" id="Light_Left_Red">   <script>fn_SymbolStatus("Light_Left_Red", "Red", "RedLightB"   )</script>
-                        <img class="Lights_Left" id="Light_Left_Yellow"><script>fn_SymbolStatus("Light_Left_Yellow", "Yellow", "YellowLightB"   )</script>
-                        <img class="Lights_Left" id="Light_Left_Green"> <script>fn_SymbolStatus("Light_Left_Green", "Green", "GreenLightB"   )</script>
+                        <img class="Lights_Left" id="Light_Left_Red">   <script>fn_SymbolStatus("Light_Left_Red", "Red", "Traffic_RedLightB"   )</script>
+                        <img class="Lights_Left" id="Light_Left_Yellow"><script>fn_SymbolStatus("Light_Left_Yellow", "Yellow", "Traffic_YellowLightB"   )</script>
+                        <img class="Lights_Left" id="Light_Left_Green"> <script>fn_SymbolStatus("Light_Left_Green", "Green", "Traffic_GreenLightB"   )</script>
 
-                        <img class="Lights_Right" id="Light_Right_Red">   <script>fn_SymbolStatus("Light_Right_Red", "Red", "RedLightB"   )</script>
-                        <img class="Lights_Right" id="Light_Right_Yellow"><script>fn_SymbolStatus("Light_Right_Yellow", "Yellow", "YellowLightB"   )</script>
-                        <img class="Lights_Right" id="Light_Right_Green"> <script>fn_SymbolStatus("Light_Right_Green", "Green", "GreenLightB"   )</script>
+                        <img class="Lights_Right" id="Light_Right_Red">   <script>fn_SymbolStatus("Light_Right_Red", "Red", "Traffic_RedLightB"   )</script>
+                        <img class="Lights_Right" id="Light_Right_Yellow"><script>fn_SymbolStatus("Light_Right_Yellow", "Yellow", "Traffic_YellowLightB"   )</script>
+                        <img class="Lights_Right" id="Light_Right_Green"> <script>fn_SymbolStatus("Light_Right_Green", "Green", "Traffic_GreenLightB"   )</script>
                     </div>
                     <div class="Segment-container">
                         <!-- Lights Bot  -->
-                        <img class="Segment_Bot_0" id="Segment_Bot_a_0"> <script> fn_7segmentDisplay("Segment_Bot_a_0", "7Seg_horizontal", "SegmentA_0_Code",6) </script>
-                        <img class="Segment_Bot_0" id="Segment_Bot_b_0"> <script> fn_7segmentDisplay("Segment_Bot_b_0", "7Seg_vertical", "SegmentA_0_Code",5) </script>
-                        <img class="Segment_Bot_0" id="Segment_Bot_c_0"> <script> fn_7segmentDisplay("Segment_Bot_c_0", "7Seg_vertical", "SegmentA_0_Code",4) </script>
-                        <img class="Segment_Bot_0" id="Segment_Bot_d_0"> <script> fn_7segmentDisplay("Segment_Bot_d_0", "7Seg_horizontal", "SegmentA_0_Code",3) </script>
-                        <img class="Segment_Bot_0" id="Segment_Bot_e_0"> <script> fn_7segmentDisplay("Segment_Bot_e_0", "7Seg_vertical", "SegmentA_0_Code",2) </script>
-                        <img class="Segment_Bot_0" id="Segment_Bot_f_0"> <script> fn_7segmentDisplay("Segment_Bot_f_0", "7Seg_vertical", "SegmentA_0_Code",1) </script>
-                        <img class="Segment_Bot_0" id="Segment_Bot_g_0"> <script> fn_7segmentDisplay("Segment_Bot_g_0", "7Seg_horizontal", "SegmentA_0_Code",0) </script>
+                        <img class="Segment_Bot_0" id="Segment_Bot_a_0"> <script> fn_7segmentDisplay("Segment_Bot_a_0", "7Seg_horizontal", "Traffic_SegmentA_0_Code",6) </script>
+                        <img class="Segment_Bot_0" id="Segment_Bot_b_0"> <script> fn_7segmentDisplay("Segment_Bot_b_0", "7Seg_vertical", "Traffic_SegmentA_0_Code",5) </script>
+                        <img class="Segment_Bot_0" id="Segment_Bot_c_0"> <script> fn_7segmentDisplay("Segment_Bot_c_0", "7Seg_vertical", "Traffic_SegmentA_0_Code",4) </script>
+                        <img class="Segment_Bot_0" id="Segment_Bot_d_0"> <script> fn_7segmentDisplay("Segment_Bot_d_0", "7Seg_horizontal", "Traffic_SegmentA_0_Code",3) </script>
+                        <img class="Segment_Bot_0" id="Segment_Bot_e_0"> <script> fn_7segmentDisplay("Segment_Bot_e_0", "7Seg_vertical", "Traffic_SegmentA_0_Code",2) </script>
+                        <img class="Segment_Bot_0" id="Segment_Bot_f_0"> <script> fn_7segmentDisplay("Segment_Bot_f_0", "7Seg_vertical", "Traffic_SegmentA_0_Code",1) </script>
+                        <img class="Segment_Bot_0" id="Segment_Bot_g_0"> <script> fn_7segmentDisplay("Segment_Bot_g_0", "7Seg_horizontal", "Traffic_SegmentA_0_Code",0) </script>
 
-                        <img class="Segment_Bot_1" id="Segment_Bot_a_1"> <script> fn_7segmentDisplay("Segment_Bot_a_1", "7Seg_horizontal", "SegmentA_1_Code",6) </script>
-                        <img class="Segment_Bot_1" id="Segment_Bot_b_1"> <script> fn_7segmentDisplay("Segment_Bot_b_1", "7Seg_vertical", "SegmentA_1_Code",5) </script>
-                        <img class="Segment_Bot_1" id="Segment_Bot_c_1"> <script> fn_7segmentDisplay("Segment_Bot_c_1", "7Seg_vertical", "SegmentA_1_Code",4) </script>
-                        <img class="Segment_Bot_1" id="Segment_Bot_d_1"> <script> fn_7segmentDisplay("Segment_Bot_d_1", "7Seg_horizontal", "SegmentA_1_Code",3) </script>
-                        <img class="Segment_Bot_1" id="Segment_Bot_e_1"> <script> fn_7segmentDisplay("Segment_Bot_e_1", "7Seg_vertical", "SegmentA_1_Code",2) </script>
-                        <img class="Segment_Bot_1" id="Segment_Bot_f_1"> <script> fn_7segmentDisplay("Segment_Bot_f_1", "7Seg_vertical", "SegmentA_1_Code",1) </script>
-                        <img class="Segment_Bot_1" id="Segment_Bot_g_1"> <script> fn_7segmentDisplay("Segment_Bot_g_1", "7Seg_horizontal", "SegmentA_1_Code",0) </script>
+                        <img class="Segment_Bot_1" id="Segment_Bot_a_1"> <script> fn_7segmentDisplay("Segment_Bot_a_1", "7Seg_horizontal", "Traffic_SegmentA_1_Code",6) </script>
+                        <img class="Segment_Bot_1" id="Segment_Bot_b_1"> <script> fn_7segmentDisplay("Segment_Bot_b_1", "7Seg_vertical", "Traffic_SegmentA_1_Code",5) </script>
+                        <img class="Segment_Bot_1" id="Segment_Bot_c_1"> <script> fn_7segmentDisplay("Segment_Bot_c_1", "7Seg_vertical", "Traffic_SegmentA_1_Code",4) </script>
+                        <img class="Segment_Bot_1" id="Segment_Bot_d_1"> <script> fn_7segmentDisplay("Segment_Bot_d_1", "7Seg_horizontal", "Traffic_SegmentA_1_Code",3) </script>
+                        <img class="Segment_Bot_1" id="Segment_Bot_e_1"> <script> fn_7segmentDisplay("Segment_Bot_e_1", "7Seg_vertical", "Traffic_SegmentA_1_Code",2) </script>
+                        <img class="Segment_Bot_1" id="Segment_Bot_f_1"> <script> fn_7segmentDisplay("Segment_Bot_f_1", "7Seg_vertical", "Traffic_SegmentA_1_Code",1) </script>
+                        <img class="Segment_Bot_1" id="Segment_Bot_g_1"> <script> fn_7segmentDisplay("Segment_Bot_g_1", "7Seg_horizontal", "Traffic_SegmentA_1_Code",0) </script>
 
                          <!-- Lights Top  -->
-                        <img class="Segment_Top_0" id="Segment_Top_a_0"> <script> fn_7segmentDisplay("Segment_Top_a_0", "7Seg_horizontal", "SegmentA_0_Code",6) </script>
-                        <img class="Segment_Top_0" id="Segment_Top_b_0"> <script> fn_7segmentDisplay("Segment_Top_b_0", "7Seg_vertical", "SegmentA_0_Code",5) </script>
-                        <img class="Segment_Top_0" id="Segment_Top_c_0"> <script> fn_7segmentDisplay("Segment_Top_c_0", "7Seg_vertical", "SegmentA_0_Code",4) </script>
-                        <img class="Segment_Top_0" id="Segment_Top_d_0"> <script> fn_7segmentDisplay("Segment_Top_d_0", "7Seg_horizontal", "SegmentA_0_Code",3) </script>
-                        <img class="Segment_Top_0" id="Segment_Top_e_0"> <script> fn_7segmentDisplay("Segment_Top_e_0", "7Seg_vertical", "SegmentA_0_Code",2) </script>
-                        <img class="Segment_Top_0" id="Segment_Top_f_0"> <script> fn_7segmentDisplay("Segment_Top_f_0", "7Seg_vertical", "SegmentA_0_Code",1) </script>
-                        <img class="Segment_Top_0" id="Segment_Top_g_0"> <script> fn_7segmentDisplay("Segment_Top_g_0", "7Seg_horizontal", "SegmentA_0_Code",0) </script>
+                        <img class="Segment_Top_0" id="Segment_Top_a_0"> <script> fn_7segmentDisplay("Segment_Top_a_0", "7Seg_horizontal", "Traffic_SegmentA_0_Code",6) </script>
+                        <img class="Segment_Top_0" id="Segment_Top_b_0"> <script> fn_7segmentDisplay("Segment_Top_b_0", "7Seg_vertical", "Traffic_SegmentA_0_Code",5) </script>
+                        <img class="Segment_Top_0" id="Segment_Top_c_0"> <script> fn_7segmentDisplay("Segment_Top_c_0", "7Seg_vertical", "Traffic_SegmentA_0_Code",4) </script>
+                        <img class="Segment_Top_0" id="Segment_Top_d_0"> <script> fn_7segmentDisplay("Segment_Top_d_0", "7Seg_horizontal", "Traffic_SegmentA_0_Code",3) </script>
+                        <img class="Segment_Top_0" id="Segment_Top_e_0"> <script> fn_7segmentDisplay("Segment_Top_e_0", "7Seg_vertical", "Traffic_SegmentA_0_Code",2) </script>
+                        <img class="Segment_Top_0" id="Segment_Top_f_0"> <script> fn_7segmentDisplay("Segment_Top_f_0", "7Seg_vertical", "Traffic_SegmentA_0_Code",1) </script>
+                        <img class="Segment_Top_0" id="Segment_Top_g_0"> <script> fn_7segmentDisplay("Segment_Top_g_0", "7Seg_horizontal", "Traffic_SegmentA_0_Code",0) </script>
 
-                        <img class="Segment_Top_1" id="Segment_Top_a_1"> <script> fn_7segmentDisplay("Segment_Top_a_1", "7Seg_horizontal", "SegmentA_1_Code",6) </script>
-                        <img class="Segment_Top_1" id="Segment_Top_b_1"> <script> fn_7segmentDisplay("Segment_Top_b_1", "7Seg_vertical", "SegmentA_1_Code",5) </script>
-                        <img class="Segment_Top_1" id="Segment_Top_c_1"> <script> fn_7segmentDisplay("Segment_Top_c_1", "7Seg_vertical", "SegmentA_1_Code",4) </script>
-                        <img class="Segment_Top_1" id="Segment_Top_d_1"> <script> fn_7segmentDisplay("Segment_Top_d_1", "7Seg_horizontal", "SegmentA_1_Code",3) </script>
-                        <img class="Segment_Top_1" id="Segment_Top_e_1"> <script> fn_7segmentDisplay("Segment_Top_e_1", "7Seg_vertical", "SegmentA_1_Code",2) </script>
-                        <img class="Segment_Top_1" id="Segment_Top_f_1"> <script> fn_7segmentDisplay("Segment_Top_f_1", "7Seg_vertical", "SegmentA_1_Code",1) </script>
-                        <img class="Segment_Top_1" id="Segment_Top_g_1"> <script> fn_7segmentDisplay("Segment_Top_g_1", "7Seg_horizontal", "SegmentA_1_Code",0) </script>
+                        <img class="Segment_Top_1" id="Segment_Top_a_1"> <script> fn_7segmentDisplay("Segment_Top_a_1", "7Seg_horizontal", "Traffic_SegmentA_1_Code",6) </script>
+                        <img class="Segment_Top_1" id="Segment_Top_b_1"> <script> fn_7segmentDisplay("Segment_Top_b_1", "7Seg_vertical", "Traffic_SegmentA_1_Code",5) </script>
+                        <img class="Segment_Top_1" id="Segment_Top_c_1"> <script> fn_7segmentDisplay("Segment_Top_c_1", "7Seg_vertical", "Traffic_SegmentA_1_Code",4) </script>
+                        <img class="Segment_Top_1" id="Segment_Top_d_1"> <script> fn_7segmentDisplay("Segment_Top_d_1", "7Seg_horizontal", "Traffic_SegmentA_1_Code",3) </script>
+                        <img class="Segment_Top_1" id="Segment_Top_e_1"> <script> fn_7segmentDisplay("Segment_Top_e_1", "7Seg_vertical", "Traffic_SegmentA_1_Code",2) </script>
+                        <img class="Segment_Top_1" id="Segment_Top_f_1"> <script> fn_7segmentDisplay("Segment_Top_f_1", "7Seg_vertical", "Traffic_SegmentA_1_Code",1) </script>
+                        <img class="Segment_Top_1" id="Segment_Top_g_1"> <script> fn_7segmentDisplay("Segment_Top_g_1", "7Seg_horizontal", "Traffic_SegmentA_1_Code",0) </script>
 
                          <!-- Lights Left  -->
-                        <img class="Segment_Left_0" id="Segment_Left_a_0"> <script> fn_7segmentDisplay("Segment_Left_a_0", "7Seg_vertical", "SegmentB_0_Code",6) </script>
-                        <img class="Segment_Left_0" id="Segment_Left_b_0"> <script> fn_7segmentDisplay("Segment_Left_b_0", "7Seg_horizontal", "SegmentB_0_Code",5) </script>
-                        <img class="Segment_Left_0" id="Segment_Left_c_0"> <script> fn_7segmentDisplay("Segment_Left_c_0", "7Seg_horizontal", "SegmentB_0_Code",4) </script>
-                        <img class="Segment_Left_0" id="Segment_Left_d_0"> <script> fn_7segmentDisplay("Segment_Left_d_0", "7Seg_vertical", "SegmentB_0_Code",3) </script>
-                        <img class="Segment_Left_0" id="Segment_Left_e_0"> <script> fn_7segmentDisplay("Segment_Left_e_0", "7Seg_horizontal", "SegmentB_0_Code",2) </script>
-                        <img class="Segment_Left_0" id="Segment_Left_f_0"> <script> fn_7segmentDisplay("Segment_Left_f_0", "7Seg_horizontal", "SegmentB_0_Code",1) </script>
-                        <img class="Segment_Left_0" id="Segment_Left_g_0"> <script> fn_7segmentDisplay("Segment_Left_g_0", "7Seg_vertical", "SegmentB_0_Code",0) </script>
+                        <img class="Segment_Left_0" id="Segment_Left_a_0"> <script> fn_7segmentDisplay("Segment_Left_a_0", "7Seg_vertical", "Traffic_SegmentB_0_Code",6) </script>
+                        <img class="Segment_Left_0" id="Segment_Left_b_0"> <script> fn_7segmentDisplay("Segment_Left_b_0", "7Seg_horizontal", "Traffic_SegmentB_0_Code",5) </script>
+                        <img class="Segment_Left_0" id="Segment_Left_c_0"> <script> fn_7segmentDisplay("Segment_Left_c_0", "7Seg_horizontal", "Traffic_SegmentB_0_Code",4) </script>
+                        <img class="Segment_Left_0" id="Segment_Left_d_0"> <script> fn_7segmentDisplay("Segment_Left_d_0", "7Seg_vertical", "Traffic_SegmentB_0_Code",3) </script>
+                        <img class="Segment_Left_0" id="Segment_Left_e_0"> <script> fn_7segmentDisplay("Segment_Left_e_0", "7Seg_horizontal", "Traffic_SegmentB_0_Code",2) </script>
+                        <img class="Segment_Left_0" id="Segment_Left_f_0"> <script> fn_7segmentDisplay("Segment_Left_f_0", "7Seg_horizontal", "Traffic_SegmentB_0_Code",1) </script>
+                        <img class="Segment_Left_0" id="Segment_Left_g_0"> <script> fn_7segmentDisplay("Segment_Left_g_0", "7Seg_vertical", "Traffic_SegmentB_0_Code",0) </script>
 
-                        <img class="Segment_Left_1" id="Segment_Left_a_1"> <script> fn_7segmentDisplay("Segment_Left_a_1", "7Seg_vertical", "SegmentB_1_Code",6) </script>
-                        <img class="Segment_Left_1" id="Segment_Left_b_1"> <script> fn_7segmentDisplay("Segment_Left_b_1", "7Seg_horizontal", "SegmentB_1_Code",5) </script>
-                        <img class="Segment_Left_1" id="Segment_Left_c_1"> <script> fn_7segmentDisplay("Segment_Left_c_1", "7Seg_horizontal", "SegmentB_1_Code",4) </script>
-                        <img class="Segment_Left_1" id="Segment_Left_d_1"> <script> fn_7segmentDisplay("Segment_Left_d_1", "7Seg_vertical", "SegmentB_1_Code",3) </script>
-                        <img class="Segment_Left_1" id="Segment_Left_e_1"> <script> fn_7segmentDisplay("Segment_Left_e_1", "7Seg_horizontal", "SegmentB_1_Code",2) </script>
-                        <img class="Segment_Left_1" id="Segment_Left_f_1"> <script> fn_7segmentDisplay("Segment_Left_f_1", "7Seg_horizontal", "SegmentB_1_Code",1) </script>
-                        <img class="Segment_Left_1" id="Segment_Left_g_1"> <script> fn_7segmentDisplay("Segment_Left_g_1", "7Seg_vertical", "SegmentB_1_Code",0) </script>
+                        <img class="Segment_Left_1" id="Segment_Left_a_1"> <script> fn_7segmentDisplay("Segment_Left_a_1", "7Seg_vertical", "Traffic_SegmentB_1_Code",6) </script>
+                        <img class="Segment_Left_1" id="Segment_Left_b_1"> <script> fn_7segmentDisplay("Segment_Left_b_1", "7Seg_horizontal", "Traffic_SegmentB_1_Code",5) </script>
+                        <img class="Segment_Left_1" id="Segment_Left_c_1"> <script> fn_7segmentDisplay("Segment_Left_c_1", "7Seg_horizontal", "Traffic_SegmentB_1_Code",4) </script>
+                        <img class="Segment_Left_1" id="Segment_Left_d_1"> <script> fn_7segmentDisplay("Segment_Left_d_1", "7Seg_vertical", "Traffic_SegmentB_1_Code",3) </script>
+                        <img class="Segment_Left_1" id="Segment_Left_e_1"> <script> fn_7segmentDisplay("Segment_Left_e_1", "7Seg_horizontal", "Traffic_SegmentB_1_Code",2) </script>
+                        <img class="Segment_Left_1" id="Segment_Left_f_1"> <script> fn_7segmentDisplay("Segment_Left_f_1", "7Seg_horizontal", "Traffic_SegmentB_1_Code",1) </script>
+                        <img class="Segment_Left_1" id="Segment_Left_g_1"> <script> fn_7segmentDisplay("Segment_Left_g_1", "7Seg_vertical", "Traffic_SegmentB_1_Code",0) </script>
 
                         <!-- Lights Right -->
-                        <img class="Segment_Right_0" id="Segment_Right_a_0"> <script> fn_7segmentDisplay("Segment_Right_a_0", "7Seg_vertical", "SegmentB_0_Code",6) </script>
-                        <img class="Segment_Right_0" id="Segment_Right_b_0"> <script> fn_7segmentDisplay("Segment_Right_b_0", "7Seg_horizontal", "SegmentB_0_Code",5) </script>
-                        <img class="Segment_Right_0" id="Segment_Right_c_0"> <script> fn_7segmentDisplay("Segment_Right_c_0", "7Seg_horizontal", "SegmentB_0_Code",4) </script>
-                        <img class="Segment_Right_0" id="Segment_Right_d_0"> <script> fn_7segmentDisplay("Segment_Right_d_0", "7Seg_vertical", "SegmentB_0_Code",3) </script>
-                        <img class="Segment_Right_0" id="Segment_Right_e_0"> <script> fn_7segmentDisplay("Segment_Right_e_0", "7Seg_horizontal", "SegmentB_0_Code",2) </script>
-                        <img class="Segment_Right_0" id="Segment_Right_f_0"> <script> fn_7segmentDisplay("Segment_Right_f_0", "7Seg_horizontal", "SegmentB_0_Code",1) </script>
-                        <img class="Segment_Right_0" id="Segment_Right_g_0"> <script> fn_7segmentDisplay("Segment_Right_g_0", "7Seg_vertical", "SegmentB_0_Code",0) </script>
+                        <img class="Segment_Right_0" id="Segment_Right_a_0"> <script> fn_7segmentDisplay("Segment_Right_a_0", "7Seg_vertical", "Traffic_SegmentB_0_Code",6) </script>
+                        <img class="Segment_Right_0" id="Segment_Right_b_0"> <script> fn_7segmentDisplay("Segment_Right_b_0", "7Seg_horizontal", "Traffic_SegmentB_0_Code",5) </script>
+                        <img class="Segment_Right_0" id="Segment_Right_c_0"> <script> fn_7segmentDisplay("Segment_Right_c_0", "7Seg_horizontal", "Traffic_SegmentB_0_Code",4) </script>
+                        <img class="Segment_Right_0" id="Segment_Right_d_0"> <script> fn_7segmentDisplay("Segment_Right_d_0", "7Seg_vertical", "Traffic_SegmentB_0_Code",3) </script>
+                        <img class="Segment_Right_0" id="Segment_Right_e_0"> <script> fn_7segmentDisplay("Segment_Right_e_0", "7Seg_horizontal", "Traffic_SegmentB_0_Code",2) </script>
+                        <img class="Segment_Right_0" id="Segment_Right_f_0"> <script> fn_7segmentDisplay("Segment_Right_f_0", "7Seg_horizontal", "Traffic_SegmentB_0_Code",1) </script>
+                        <img class="Segment_Right_0" id="Segment_Right_g_0"> <script> fn_7segmentDisplay("Segment_Right_g_0", "7Seg_vertical", "Traffic_SegmentB_0_Code",0) </script>
 
-                        <img class="Segment_Right_1" id="Segment_Right_a_1"> <script> fn_7segmentDisplay("Segment_Right_a_1", "7Seg_vertical", "SegmentB_1_Code",6) </script>
-                        <img class="Segment_Right_1" id="Segment_Right_b_1"> <script> fn_7segmentDisplay("Segment_Right_b_1", "7Seg_horizontal", "SegmentB_1_Code",5) </script>
-                        <img class="Segment_Right_1" id="Segment_Right_c_1"> <script> fn_7segmentDisplay("Segment_Right_c_1", "7Seg_horizontal", "SegmentB_1_Code",4) </script>
-                        <img class="Segment_Right_1" id="Segment_Right_d_1"> <script> fn_7segmentDisplay("Segment_Right_d_1", "7Seg_vertical", "SegmentB_1_Code",3) </script>
-                        <img class="Segment_Right_1" id="Segment_Right_e_1"> <script> fn_7segmentDisplay("Segment_Right_e_1", "7Seg_horizontal", "SegmentB_1_Code",2) </script>
-                        <img class="Segment_Right_1" id="Segment_Right_f_1"> <script> fn_7segmentDisplay("Segment_Right_f_1", "7Seg_horizontal", "SegmentB_1_Code",1) </script>
-                        <img class="Segment_Right_1" id="Segment_Right_g_1"> <script> fn_7segmentDisplay("Segment_Right_g_1", "7Seg_vertical", "SegmentB_1_Code",0) </script>
+                        <img class="Segment_Right_1" id="Segment_Right_a_1"> <script> fn_7segmentDisplay("Segment_Right_a_1", "7Seg_vertical", "Traffic_SegmentB_1_Code",6) </script>
+                        <img class="Segment_Right_1" id="Segment_Right_b_1"> <script> fn_7segmentDisplay("Segment_Right_b_1", "7Seg_horizontal", "Traffic_SegmentB_1_Code",5) </script>
+                        <img class="Segment_Right_1" id="Segment_Right_c_1"> <script> fn_7segmentDisplay("Segment_Right_c_1", "7Seg_horizontal", "Traffic_SegmentB_1_Code",4) </script>
+                        <img class="Segment_Right_1" id="Segment_Right_d_1"> <script> fn_7segmentDisplay("Segment_Right_d_1", "7Seg_vertical", "Traffic_SegmentB_1_Code",3) </script>
+                        <img class="Segment_Right_1" id="Segment_Right_e_1"> <script> fn_7segmentDisplay("Segment_Right_e_1", "7Seg_horizontal", "Traffic_SegmentB_1_Code",2) </script>
+                        <img class="Segment_Right_1" id="Segment_Right_f_1"> <script> fn_7segmentDisplay("Segment_Right_f_1", "7Seg_horizontal", "Traffic_SegmentB_1_Code",1) </script>
+                        <img class="Segment_Right_1" id="Segment_Right_g_1"> <script> fn_7segmentDisplay("Segment_Right_g_1", "7Seg_vertical", "Traffic_SegmentB_1_Code",0) </script>
                     </div>
                     <div class="Param-Traffic-Lights-container">
                         <p id="Bang-dieu-khien-text">BẢNG ĐIỀU KHIỂN</p>
@@ -253,9 +389,9 @@
                         <p id="Thoi-gian-den-do-text"> Thời gian đèn đỏ cài đặt :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(S)</p>
                         <p id="Thoi-gian-den-vang-text"> Thời gian đèn vàng cài đặt :  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(S)</p>
                         <p id="Thoi-gian-den-xanh-text"> Thời gian đèn xanh cài đặt :  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(S)</p>
-                        <input id="Time_Red_Display"><script>fn_IOFieldDataShow("RedTime","Time_Red_Display",0)</script>
-                        <input id="Time_Yellow_Display"><script>fn_IOFieldDataShow("YellowTime","Time_Yellow_Display",0)</script>
-                        <input id="Time_Green_Display"><script>fn_IOFieldDataShow("GreenTime","Time_Green_Display",0)</script>
+                        <input id="Time_Red_Display" disabled="disabled"><script>fn_IOFieldDataShow("Traffic_RedTimeDisplay","Time_Red_Display",0)</script>
+                        <input id="Time_Yellow_Display" disabled="disabled"><script>fn_IOFieldDataShow("Traffic_YellowTimeDisplay","Time_Yellow_Display",0)</script>
+                        <input id="Time_Green_Display" disabled="disabled"><script>fn_IOFieldDataShow("Traffic_GreenTimeDisplay","Time_Green_Display",0)</script>
                 </div>
                 </div> 
             </div>

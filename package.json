@@ -12,11 +12,13 @@
   "dependencies": {
     "connect-livereload": "^0.6.1",
     "ejs": "^3.1.6",
+    "exceljs": "^4.3.0",
     "express": "^4.17.2",
     "jquery": "^3.6.0",
     "kepserverex-js": "^1.0.6",
     "livereload": "^0.9.3",
     "lodash": "^4.17.21",
+    "mysql": "^2.18.1",
     "socket.io": "^4.4.0"
   },
   "devDependencies": {

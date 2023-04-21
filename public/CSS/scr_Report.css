@@ -1,8 +1,0 @@
-/*Màn hình tự động*/
-#Screen_Report {
-    position: absolute; 
-    left: 202px; top: 2px; 
-    width: 1320px; height: 725px;
-    background-color: rgb(15, 228, 210); 
-    border-radius: 20px;
-}
