@@ -693,8 +693,23 @@ button:hover{
 
 #Billet_Mode{
     position: absolute;
-    left:1100px; top: 40px;
-    width: 150px;
+    left:1130px; top: 10px;
+    width: 70px;
+}
+#Billet_Red{
+    position: absolute;
+    left:1030px; top: 100px;
+    width: 70px;
+}
+#Billet_Yellow{
+    position: absolute;
+    left:1130px; top: 100px;
+    width: 70px;
+}
+#Billet_Green{
+    position: absolute;
+    left:1230px; top: 100px;
+    width: 70px;
 }
 
 /*************vị trí các mũi tên chỉ trạng thái hoạt động của các valve**********************/

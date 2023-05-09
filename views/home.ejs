@@ -61,6 +61,8 @@
             </div>
         </div>
     </head>
+   
+   
     <body>
         <!-- ////////////// Code cho slidebar////////////// -->
         <div id = "slidebar">
@@ -96,7 +98,7 @@
         </div>
     
          
-        <!-- //////////////Code cho màn hình bằng tay////////////// -->
+        <!-- //////////////Code cho màn hình cài đặt////////////// -->
         <div id = "Screen_Setting">
             <button id="btt_Setting_Traffic_Lights" onclick="fn_ScreenChange_Sub('Screen_Setting_Traffic_Lights','Screen_Setting_Inverter','Screen_Setting_BilletDrill','btt_Setting_Traffic_Lights','btt_Setting_Inverter','btt_Setting_BilletDrill')" >ĐÈN GIAO THÔNG</button>
             <button id="btt_Setting_Inverter" onclick="fn_ScreenChange_Sub('Screen_Setting_Inverter','Screen_Setting_Traffic_Lights','Screen_Setting_BilletDrill','btt_Setting_Inverter','btt_Setting_Traffic_Lights','btt_Setting_BilletDrill')">BIẾN TẦN & ĐỘNG CƠ</button>
@@ -128,15 +130,13 @@
                     <div id="Cai-dat-thong-so-BilletDrill-text">CÀI ĐẶT THÔNG SỐ</div>
                     <div id="So-phoi-text">Số phôi cần khoan :</div>
                     <div id="So-lo-text">Sô lỗ cần khoan mỗi phôi :</div>
-                    <button id="btt_BilletDrill_Confirm" onclick="">XÁC NHẬN</button>
+                    <button id="btt_BilletDrill_Confirm" onclick="fn_SaveDataBillet()">XÁC NHẬN</button>
                     <input id="Billet_Setting">
                     <input id="Hole_Setting">
                 </div> 
             </div>
         </div> 
-        
-            
-        
+                       
         <!-- //////////////Code cho màn hình cảnh báo////////////// -->
         <div id = "Screen_Alarm">
             <p style="font-family: Montserrat; font-weight: bold; font-size: 25px; position: absolute; left: 450px;top:20px" ><i class="fa-solid fa-triangle-exclamation"></i> CẢNH BÁO VẬN HÀNH KHOAN PHÔI</p>
@@ -158,7 +158,8 @@
             <input id="Alarm_Search_End" type="datetime-local">
             <!--Nút tìm kiếm-->
             <button id="btt_Alarm_Search" class="btn" onclick="fn_Alarm_By_Time();">TÌM KIẾM</button>
-        </div>    
+        </div>  
+
         <!-- //////////////Code cho màn lịch sử////////////// -->
         <div id = "Screen_History">
             <p style="font-family: Montserrat; font-weight: bold; font-size: 25px; position: absolute; left: 450px;top:20px" ><i class="fa-solid fa-newspaper"></i> LỊCH SỬ VẬN HÀNH KHOAN PHÔI</p>
@@ -183,6 +184,7 @@
                 <button id="btt_History_Search" class="btn" onclick="fn_SQL_By_Time();"></i> TÌM KIẾM</button>
                 <button id="btt_History_Excel" class="btn" onclick="fn_excel();"></i> BÁO CÁO</button>
         </div>  
+
     <!-- //////////////Code cho màn giới thiệu////////////// -->
          
         <div id = "Screen_Introduction">
@@ -202,7 +204,7 @@
            
         </div>   
 
-        
+    <!-- //////////////Code cho màn giám sát////////////// -->
         <div id = "Screen_Monitor">
             
             <button id="btt_Monitor_Traffic_Lights" onclick="fn_ScreenChange_Sub('Screen_Monitor_Traffic_Lights','Screen_Monitor_Inverter','Screen_Monitor_BilletDrill','btt_Monitor_Traffic_Lights','btt_Monitor_Inverter','btt_Monitor_BilletDrill')" >ĐÈN GIAO THÔNG</button>
@@ -214,7 +216,7 @@
                     <p id="Bang-dieu-khien-2-text">BẢNG ĐIỀU KHIỂN</p>
                     <button id="btn_Start_BDK_2" onclick="fn_ControlInverterStart()" >START</button> 
                     <button id="btn_Stop_BDK_2" onclick="fn_ControlInverterStop()">STOP</button>
-                    <button id="btn_Jog_BDK"  onmousedown="socket.emit('cmd_Inverter_control_Jog', true);" onmouseup="socket.emit('cmd_Inverter_control_Jog', false);">JOG</button>
+                    <button id="btn_Jog_BDK"  onmousedown="socket.emit('cmd_Inverter_control_Jog', true);" onmouseup="socket.emit('cmd_Inverter_control_Jog', false);" >JOG</button>
                     <button id="btn_Fwd" onclick="fn_ControlInverterFwd()"><i class="fa-solid fa-left-long fa-xl"></i></button>
                     <button id="btn_Rev" onclick="fn_ControlInverterRev()"><i class="fa-solid fa-right-long fa-xl"></i></button>
                     <button id="btn_10Hz" onclick="fn_SaveDataInverterPreset(10)">10Hz</button>
@@ -266,7 +268,12 @@
             <div id="Screen_Monitor_BilletDrill">
                 <img src="images/BilletDrill/BilletDrill.png">
                 <img id="Billet_Mode"> <script>fn_SymbolStatusBillet("Billet_Mode", "Mode", "Billet_Auto_Manu"   )</script>
-                <img id="A1"> <script>fn_SymbolStatusBillet("A1", "LS1+", "Billet_A1"   )</script>
+                <img id="Billet_Red"> <script>fn_SymbolStatusBillet("Billet_Red", "Red", "Billet_Red"   )</script>
+                <img id="Billet_Yellow"> <script>fn_SymbolStatusBillet("Billet_Yellow", "Yellow", "Billet_Yellow"   )</script>
+                <img id="Billet_Green"> <script>fn_SymbolStatusBillet("Billet_Green", "Green", "Billet_Green"   )</script>
+                
+               
+                <img id="A1"> <script>fn_SymbolStatusBillet("A1", "LS1+", "Billet_A1"   )</script> 
                 <img id="B1"> <script>fn_SymbolStatusBillet("B1", "LS1-", "Billet_B1"   )</script>
                 <img id="A2"> <script>fn_SymbolStatusBillet("A2", "LS1+", "Billet_A2"   )</script>
                 <img id="B2"> <script>fn_SymbolStatusBillet("B2", "LS1-", "Billet_B2"   )</script>
@@ -295,7 +302,7 @@
                 
                 <div class="background_traffic_lights" > 
                     <img id="traffic_lights_background" src="images/traffic_lights/NGA4.png"> 
-                    <img id="Time_background"> <script>fn_SymbolStatus("Time_background", "Time", "LightSensor")</script> 
+                    <img id="Time_background"> <script>fn_SymbolStatus("Time_background", "Time", "Traffic_LightSensor")</script> 
                     <div class="Lights-container">
                         <img class="Lights_Bot" id="Light_Bot_Red">   <script>fn_SymbolStatus("Light_Bot_Red", "Red", "Traffic_RedLightA"   )</script>
                         <img class="Lights_Bot" id="Light_Bot_Yellow"><script>fn_SymbolStatus("Light_Bot_Yellow", "Yellow", "Traffic_YellowLightA"   )</script>
